@@ -1,2 +1,2 @@
 # food-app
-MEVN Stack Food App + MySQL
+MERN Stack Food App + MySQL
