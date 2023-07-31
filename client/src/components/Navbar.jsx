@@ -4,7 +4,7 @@ import { BiUserCircle } from "react-icons/bi";
 
 const Navbar = () => {
   return (
-    <nav className="w-screen flex flex-row items-center justify-between shadow-xl px-10 py-5">
+    <nav className="fixed top-0 z-50 bg-white w-full flex flex-row items-center justify-between shadow-xl px-10 py-5">
       {/* Logo */}
       <span className="text-2xl font-semibold">Food App</span>
       {/* Nav List */}

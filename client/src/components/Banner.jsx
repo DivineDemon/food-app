@@ -7,7 +7,7 @@ const Banner = () => {
       <img
         src={BannerImage}
         alt="banner"
-        className="w-screen h-[500px] opacity-50 object-cover"
+        className="w-full h-[500px] opacity-50 object-cover"
       />
     </div>
   );

@@ -20,7 +20,7 @@ const CategoryList = () => {
     return <div>Error: {error}</div>;
   } else {
     return (
-      <div className="w-screen flex flex-row items-center justify-center space-x-10 p-5">
+      <div className="w-full flex flex-row items-center justify-center space-x-10 p-5">
         {categories.map((category) => (
           <CategoryButton key={category.id} name={category.name} />
         ))}
