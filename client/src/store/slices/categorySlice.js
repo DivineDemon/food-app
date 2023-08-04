@@ -15,6 +15,7 @@ export const fetchCategories = createAsyncThunk("get/Categories", async () => {
 const initialState = {
   loading: false,
   error: false,
+  message: "",
   categories: [],
   category: "",
 };
@@ -33,13 +34,20 @@ const categorySlice = createSlice({
         state.loading = true;
       })
       .addCase(fetchCategories.fulfilled, (state, action) => {
-        state.loading = false;
-        state.categories = action.payload;
-        state.error = null;
+        if (action.payload === undefined) {
+          state.error = true;
+          state.loading = false;
+          state.message = "Data Not Found!";
+        } else {
+          state.loading = false;
+          state.categories = action.payload;
+          state.error = false;
+          state.message = "";
+        }
       })
       .addCase(fetchCategories.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message;
+        state.message = action.error.message;
       });
   },
 });
