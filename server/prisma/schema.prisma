@@ -31,7 +31,7 @@ model item {
 
 model user {
   id       Int        @id @default(autoincrement())
-  username String?    @db.Text
+  username String     @unique(map: "username") @db.VarChar(50)
   email    String     @unique(map: "email") @db.VarChar(50)
   password String     @db.Text
   type     String

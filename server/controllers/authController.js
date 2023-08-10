@@ -45,12 +45,26 @@ const register = async (req, res) => {
 
 const login = async (req, res) => {
   try {
-    const { email, password } = req.body;
-    const user = await prisma.user.findUnique({
-      where: {
-        email,
-      },
-    });
+    let user = null;
+    const { username, email, password } = req.body;
+
+    // If User Enters Username
+    if (username) {
+      user = await prisma.user.findUnique({
+        where: {
+          username,
+        },
+      });
+    }
+
+    // If User Enters Email
+    if (email) {
+      user = await prisma.user.findUnique({
+        where: {
+          email,
+        },
+      });
+    }
 
     if (bcrypt.compareSync(password, user.password)) {
       // Generate JWT Token
