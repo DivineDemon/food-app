@@ -60,7 +60,7 @@ const addCategory = async (req, res) => {
     const response = await prisma.category.create({
       data: {
         name,
-        admin: {
+        user: {
           connect: { id: req.user.id },
         },
       },

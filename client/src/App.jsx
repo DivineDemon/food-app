@@ -1,17 +1,17 @@
 import React from "react";
-import Navbar from "./components/Navbar";
-import Banner from "./components/Banner";
-import ItemList from "./components/ItemList";
-import CategoryList from "./components/CategoryList";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+
+import Auth from "./pages/Auth";
+import Home from "./pages/Home";
 
 const App = () => {
   return (
-    <>
-      <Navbar />
-      <Banner />
-      <CategoryList />
-      <ItemList />
-    </>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/auth" element={<Auth />} />
+      </Routes>
+    </Router>
   );
 };
 

@@ -7,7 +7,7 @@ const SECRET = "food-web-application" || process.env.JWT_SECRET;
 
 const register = async (req, res) => {
   try {
-    const { username, email, password } = req.body;
+    const { username, email, password, type } = req.body;
     const encryptedPassword = bcrypt.hashSync(password, 10, (err, hash) => {
       if (!err) {
         return hash;
@@ -20,11 +20,12 @@ const register = async (req, res) => {
       }
     });
 
-    const response = await prisma.admin.create({
+    const response = await prisma.user.create({
       data: {
         username,
         email,
         password: encryptedPassword,
+        type,
       },
     });
 
@@ -45,7 +46,7 @@ const register = async (req, res) => {
 const login = async (req, res) => {
   try {
     const { email, password } = req.body;
-    const user = await prisma.admin.findUnique({
+    const user = await prisma.user.findUnique({
       where: {
         email,
       },
