@@ -1,6 +1,8 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
+import Error from "./Error";
+import Loading from "./Loading";
 import CategoryButton from "./CategoryButton";
 import { fetchCategories } from "../store/slices/categorySlice";
 
@@ -16,11 +18,11 @@ const CategoryList = () => {
   }, [dispatch]);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
 
   if (error) {
-    return <div>Error: {message}</div>;
+    return <Error message={message} />;
   }
 
   return (

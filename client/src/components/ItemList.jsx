@@ -1,6 +1,8 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
+import Error from "./Error";
+import Loading from "./Loading";
 import ItemCard from "./ItemCard";
 import { fetchItems } from "../store/slices/itemSlice";
 
@@ -16,11 +18,11 @@ const ItemList = () => {
   }, [dispatch]);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
 
   if (error) {
-    return <div>Error: {message}</div>;
+    return <Error message={message} />;
   }
 
   return (
