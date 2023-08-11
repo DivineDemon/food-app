@@ -26,7 +26,7 @@ export const login = createAsyncThunk("user/Login", async (userData) => {
   });
 
   const data = await response.json();
-  return data.response;
+  return data.user;
 });
 
 const initialState = {

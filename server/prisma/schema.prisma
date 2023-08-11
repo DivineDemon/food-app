@@ -35,5 +35,6 @@ model user {
   email    String     @unique(map: "email") @db.VarChar(50)
   password String     @db.Text
   type     String
+  image    String
   category category[]
 }

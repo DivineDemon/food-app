@@ -1,14 +1,16 @@
 import React from "react";
 
 const FormGroup = ({
-  label,
-  placeholder,
+  id,
   type,
+  text,
   name,
-  setUsername,
-  setEmail,
-  setPassword,
+  label,
   setText,
+  setEmail,
+  placeholder,
+  setUsername,
+  setPassword,
 }) => {
   const handleChange = (e) => {
     if (name === "email") {
@@ -30,6 +32,8 @@ const FormGroup = ({
         type={type}
         placeholder={placeholder}
         name={name}
+        id={id}
+        defaultValue={text}
         className="px-5 py-3 rounded-lg text-md"
         onChange={handleChange}
       />

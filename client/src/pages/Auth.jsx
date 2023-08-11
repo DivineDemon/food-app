@@ -1,43 +1,38 @@
-import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+
 import FormGroup from "../components/FormGroup";
+import { register, login } from "../store/slices/userSlice";
 
 const Auth = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [text, setText] = useState("");
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [isExisting, setIsExisting] = useState(false);
 
+  useEffect(() => {
+    if (isExisting) {
+      setText(document.getElementById("username_or_email").value);
+    }
+  }, [isExisting]);
+
   const submitAuthForm = async (e) => {
     e.preventDefault();
     const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
 
-    if (text) {
+    if (isExisting) {
       if (emailRegex.test(text)) {
-        await fetch(`${process.env.REACT_APP_BASE_URL}/auth/login`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ email: text, password }),
-        });
+        dispatch(login({ email: text, password }));
       } else {
-        await fetch(`${process.env.REACT_APP_BASE_URL}/auth/login`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ username: text, password }),
-        });
+        dispatch(login({ username: text, password }));
+        navigate("/");
       }
     } else {
-      await fetch(`${process.env.REACT_APP_BASE_URL}/auth/register`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ username, email, password }),
-      });
+      dispatch(register({ username, email, password }));
     }
   };
 
@@ -53,6 +48,7 @@ const Auth = () => {
         {!isExisting ? (
           <FormGroup
             name="username"
+            id="username"
             placeholder="Enter Username"
             type="text"
             label="Username"
@@ -61,15 +57,18 @@ const Auth = () => {
         ) : (
           <FormGroup
             name="username_or_email"
+            id="username_or_email"
             placeholder="Enter Username or Email"
             type="text"
             label="Username or Email"
             setText={setText}
+            text={text}
           />
         )}
         {!isExisting && (
           <FormGroup
             name="email"
+            id="email"
             placeholder="Enter Email"
             type="email"
             label="Email"
@@ -78,6 +77,7 @@ const Auth = () => {
         )}
         <FormGroup
           name="password"
+          id="password"
           placeholder="Enter Password"
           type="password"
           label="Password"

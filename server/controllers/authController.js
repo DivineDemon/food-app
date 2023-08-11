@@ -7,7 +7,7 @@ const SECRET = "food-web-application" || process.env.JWT_SECRET;
 
 const register = async (req, res) => {
   try {
-    const { username, email, password, type } = req.body;
+    const { username, email, password, type, image } = req.body;
     const encryptedPassword = bcrypt.hashSync(password, 10, (err, hash) => {
       if (!err) {
         return hash;
@@ -26,6 +26,7 @@ const register = async (req, res) => {
         email,
         password: encryptedPassword,
         type,
+        image,
       },
     });
 
