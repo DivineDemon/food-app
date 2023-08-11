@@ -1,16 +1,5 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-
-export const fetchCategories = createAsyncThunk("get/Categories", async () => {
-  const response = await fetch(
-    `${process.env.REACT_APP_BASE_URL}/category/all`,
-    {
-      method: "GET",
-    }
-  );
-
-  const data = await response.json();
-  return data.response;
-});
+import { fetchCategories } from "../api";
+import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   loading: false,

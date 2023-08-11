@@ -1,33 +1,5 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-
-export const register = createAsyncThunk("user/Register", async (userData) => {
-  const response = await fetch(
-    `${process.env.REACT_APP_BASE_URL}/auth/register`,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(userData),
-    }
-  );
-
-  const data = await response.json();
-  return data.response;
-});
-
-export const login = createAsyncThunk("user/Login", async (userData) => {
-  const response = await fetch(`${process.env.REACT_APP_BASE_URL}/auth/login`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(userData),
-  });
-
-  const data = await response.json();
-  return data.user;
-});
+import { register, login } from "../api";
+import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   loading: false,

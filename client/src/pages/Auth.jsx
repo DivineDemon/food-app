@@ -2,8 +2,8 @@ import { useDispatch } from "react-redux";
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
+import { register, login } from "../store/api";
 import FormGroup from "../components/FormGroup";
-import { register, login } from "../store/slices/userSlice";
 
 const Auth = () => {
   const dispatch = useDispatch();

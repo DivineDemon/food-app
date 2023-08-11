@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import Error from "./Error";
 import Loading from "./Loading";
 import ItemCard from "./ItemCard";
-import { fetchItems } from "../store/slices/itemSlice";
+import { fetchItems } from "../store/api";
 
 const ItemList = () => {
   const dispatch = useDispatch();

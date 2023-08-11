@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import Error from "./Error";
 import Loading from "./Loading";
 import CategoryButton from "./CategoryButton";
-import { fetchCategories } from "../store/slices/categorySlice";
+import { fetchCategories } from "../store/api";
 
 const CategoryList = () => {
   const dispatch = useDispatch();
