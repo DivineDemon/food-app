@@ -1,15 +1,16 @@
+import rootReducer from "./reducers";
 import { configureStore } from "@reduxjs/toolkit";
+import { persistStore, persistReducer } from "redux-persist";
 
-import itemReducer from "./slices/itemSlice";
-import userReducer from "./slices/userSlice";
-import categoryReducer from "./slices/categorySlice";
+const persistConfig = {
+  key: "root",
+  storage: window.localStorage,
+};
 
-const store = configureStore({
-  reducer: {
-    item: itemReducer,
-    user: userReducer,
-    category: categoryReducer,
-  },
+const persistedReducer = persistReducer(persistConfig, rootReducer);
+
+export const store = configureStore({
+  reducer: persistedReducer,
 });
 
-export default store;
+export const persistor = persistStore(store);
