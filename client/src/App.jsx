@@ -5,20 +5,13 @@ import Auth from "./pages/Auth";
 import Home from "./pages/Home";
 import Protected from "./components/Protected";
 import PageNotFound from "./pages/PageNotFound";
+import { isAuthenticated } from "./utils/helpers";
 
 const App = () => {
   const [isSignedIn, setIsSignedIn] = useState(false);
 
   useEffect(() => {
-    const user =
-      JSON.parse(JSON.parse(localStorage.getItem("persist:root")).user).user ||
-      null;
-
-    console.log(user);
-
-    if (Object.keys(user).length !== 0) {
-      setIsSignedIn(true);
-    }
+    setIsSignedIn(isAuthenticated());
   }, []);
 
   return (

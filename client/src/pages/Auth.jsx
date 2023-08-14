@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 import { register, login } from "../store/api";
 import FormGroup from "../components/FormGroup";
+import { isAuthenticated } from "../utils/helpers";
 
 const Auth = () => {
   const dispatch = useDispatch();
@@ -29,6 +30,9 @@ const Auth = () => {
         dispatch(login({ email: text, password }));
       } else {
         dispatch(login({ username: text, password }));
+      }
+
+      if (isAuthenticated()) {
         navigate("/");
       }
     } else {

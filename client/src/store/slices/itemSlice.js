@@ -22,7 +22,7 @@ const itemSlice = createSlice({
           state.loading = false;
           state.items = [];
           state.error = true;
-          state.message = "Data Not Found!";
+          state.message = "Items Not Found!";
         } else {
           state.loading = false;
           state.items = action.payload;

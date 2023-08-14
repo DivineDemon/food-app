@@ -26,7 +26,7 @@ const categorySlice = createSlice({
         if (action.payload === undefined) {
           state.error = true;
           state.loading = false;
-          state.message = "Data Not Found!";
+          state.message = "Categories Not Found!";
         } else {
           state.loading = false;
           state.categories = action.payload;
