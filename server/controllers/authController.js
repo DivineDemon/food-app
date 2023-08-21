@@ -1,13 +1,13 @@
-const { PrismaClient } = require("@prisma/client");
-const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const { PrismaClient } = require("@prisma/client");
 
 const prisma = new PrismaClient();
 const SECRET = "food-web-application" || process.env.JWT_SECRET;
 
 const register = async (req, res) => {
   try {
-    const { username, email, password, type, image } = req.body;
+    const { username, email, password, image } = req.body;
     const encryptedPassword = bcrypt.hashSync(password, 10, (err, hash) => {
       if (!err) {
         return hash;
@@ -25,7 +25,7 @@ const register = async (req, res) => {
         username,
         email,
         password: encryptedPassword,
-        type,
+        type: "user",
         image,
       },
     });
