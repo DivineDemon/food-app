@@ -57,20 +57,27 @@ const getCategory = async (req, res) => {
 const addCategory = async (req, res) => {
   try {
     const { name } = req.body;
-    const response = await prisma.category.create({
-      data: {
-        name,
-        user: {
-          connect: { id: req.user.id },
+    if (req.user.type === "admin") {
+      const response = await prisma.category.create({
+        data: {
+          name,
+          user: {
+            connect: { id: req.user.id },
+          },
         },
-      },
-    });
+      });
 
-    res.status(200).json({
-      status: true,
-      message: "Category Added Successfully!",
-      response,
-    });
+      res.status(200).json({
+        status: true,
+        message: "Category Added Successfully!",
+        response,
+      });
+    } else {
+      res.status(403).json({
+        success: false,
+        message: "User Forbidden!",
+      });
+    }
   } catch (error) {
     res.status(500).json({
       success: false,
@@ -82,17 +89,24 @@ const addCategory = async (req, res) => {
 
 const deleteCategory = async (req, res) => {
   try {
-    const response = await prisma.category.delete({
-      where: {
-        id: Number(req.query.category_id),
-      },
-    });
+    if (req.user.type === "admin") {
+      const response = await prisma.category.delete({
+        where: {
+          id: Number(req.query.category_id),
+        },
+      });
 
-    res.status(200).json({
-      status: true,
-      message: "Category Deleted Successfully!",
-      response,
-    });
+      res.status(200).json({
+        status: true,
+        message: "Category Deleted Successfully!",
+        response,
+      });
+    } else {
+      res.status(403).json({
+        success: false,
+        message: "User Forbidden!",
+      });
+    }
   } catch (error) {
     res.status(500).json({
       success: false,
@@ -104,18 +118,25 @@ const deleteCategory = async (req, res) => {
 
 const updateCategory = async (req, res) => {
   try {
-    const response = await prisma.category.update({
-      where: {
-        id: Number(req.query.category_id),
-      },
-      data: req.body,
-    });
+    if (req.user.type === "admin") {
+      const response = await prisma.category.update({
+        where: {
+          id: Number(req.query.category_id),
+        },
+        data: req.body,
+      });
 
-    res.status(200).json({
-      status: true,
-      message: "Category Updated Successfully!",
-      response,
-    });
+      res.status(200).json({
+        status: true,
+        message: "Category Updated Successfully!",
+        response,
+      });
+    } else {
+      res.status(403).json({
+        success: false,
+        message: "User Forbidden!"
+      })
+    }
   } catch (error) {
     res.status(500).json({
       success: false,

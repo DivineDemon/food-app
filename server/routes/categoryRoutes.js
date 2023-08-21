@@ -1,11 +1,11 @@
 const express = require("express");
 const verifyToken = require("../middleware/verifyToken");
 const {
-  addCategory,
-  getAllCategories,
   getCategory,
-  deleteCategory,
+  addCategory,
   updateCategory,
+  deleteCategory,
+  getAllCategories,
 } = require("../controllers/categoryController");
 
 const router = express.Router();

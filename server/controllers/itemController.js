@@ -88,23 +88,30 @@ const getItem = async (req, res) => {
 const addItem = async (req, res) => {
   try {
     const { name, description, price, image } = req.body;
-    const response = await prisma.item.create({
-      data: {
-        name,
-        description,
-        price,
-        image,
-        category: {
-          connect: { id: Number(req.query.category_id) },
+    if (req.user.type === "admin") {
+      const response = await prisma.item.create({
+        data: {
+          name,
+          description,
+          price,
+          image,
+          category: {
+            connect: { id: Number(req.query.category_id) },
+          },
         },
-      },
-    });
+      });
 
-    res.status(200).json({
-      status: true,
-      message: "Item Added Successfully!",
-      response,
-    });
+      res.status(200).json({
+        status: true,
+        message: "Item Added Successfully!",
+        response,
+      });
+    } else {
+      res.status(403).json({
+        success: false,
+        message: "User Forbidden!",
+      });
+    }
   } catch (error) {
     res.status(500).json({
       success: false,
@@ -116,17 +123,24 @@ const addItem = async (req, res) => {
 
 const deleteItem = async (req, res) => {
   try {
-    const response = await prisma.item.delete({
-      where: {
-        id: Number(req.query.item_id),
-      },
-    });
+    if (req.user.type === "admin") {
+      const response = await prisma.item.delete({
+        where: {
+          id: Number(req.query.item_id),
+        },
+      });
 
-    res.status(200).json({
-      status: true,
-      message: "Item Deleted Successfully!",
-      response,
-    });
+      res.status(200).json({
+        status: true,
+        message: "Item Deleted Successfully!",
+        response,
+      });
+    } else {
+      res.status(403).json({
+        success: false,
+        message: "User Forbidden!",
+      });
+    }
   } catch (error) {
     res.status(500).json({
       success: false,
@@ -138,18 +152,25 @@ const deleteItem = async (req, res) => {
 
 const updateItem = async (req, res) => {
   try {
-    const response = await prisma.item.update({
-      where: {
-        id: Number(req.query.item_id),
-      },
-      data: req.body,
-    });
+    if (req.user.type === "admin") {
+      const response = await prisma.item.update({
+        where: {
+          id: Number(req.query.item_id),
+        },
+        data: req.body,
+      });
 
-    res.status(200).json({
-      status: true,
-      message: "Item Updated Successfully!",
-      response,
-    });
+      res.status(200).json({
+        status: true,
+        message: "Item Updated Successfully!",
+        response,
+      });
+    } else {
+      res.status(403).json({
+        success: false,
+        message: "User Forbidden!",
+      });
+    }
   } catch (error) {
     res.status(500).json({
       success: false,
