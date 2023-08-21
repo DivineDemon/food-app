@@ -4,7 +4,7 @@ export const isAuthenticated = () => {
     JSON.parse(localStorage.getItem("persist:root")).user
   ).user;
 
-  if (Object.keys(savedUser).length === 0) {
+  if (Object.keys(savedUser).length !== 0) {
     user = JSON.parse(
       JSON.parse(localStorage.getItem("persist:root")).user
     ).user;
