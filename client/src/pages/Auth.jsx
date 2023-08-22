@@ -1,7 +1,7 @@
 import { useJwt } from "react-jwt";
-import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
 
 import { register, login } from "../store/api";
 import FormGroup from "../components/FormGroup";
@@ -21,6 +21,10 @@ const Auth = () => {
     username: "",
     password: "",
   });
+  useEffect(() => {
+    if (!isExpired) navigate("/");
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();

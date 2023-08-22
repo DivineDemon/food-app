@@ -1,7 +1,7 @@
 import React from "react";
 import { BsCart4 } from "react-icons/bs";
 import { useSelector } from "react-redux";
-import { BiUserCircle } from "react-icons/bi";
+import UserTag from "./UserTag";
 
 const Navbar = () => {
   const user = useSelector((state) => state.user.user);
@@ -18,23 +18,7 @@ const Navbar = () => {
             4
           </span>
         </div>
-        {user ? (
-          <div className="flex flex-row items-center justify-center space-x-3">
-            <img
-              src={user.image}
-              alt="profile"
-              className="w-12 h-12 rounded-full border"
-            />
-            <div className="flex flex-col items-start justify-start">
-              <span className="font-semibold text-lg">{user.username}</span>
-              <span className="font-semibold text-xs text-gray-400">
-                {user.email}
-              </span>
-            </div>
-          </div>
-        ) : (
-          <BiUserCircle className="w-8 h-8 cursor-pointer" />
-        )}
+        <UserTag user={user} />
       </div>
     </nav>
   );
