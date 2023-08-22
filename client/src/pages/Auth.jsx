@@ -1,109 +1,97 @@
+import { useJwt } from "react-jwt";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import React, { useState, useEffect } from "react";
 
-import Loading from "../components/Loading";
 import { register, login } from "../store/api";
 import FormGroup from "../components/FormGroup";
-import { imageToBase64, isAuthenticated } from "../utils/helpers";
+import { getUserToken } from "../utils/helpers";
+import ImageUpload from "../components/ImageUpload";
 
 const Auth = () => {
+  const token = getUserToken();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [text, setText] = useState("");
-  const [email, setEmail] = useState("");
-  const [image, setImage] = useState("");
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [isExisting, setIsExisting] = useState(false);
+  const { isExpired } = useJwt(token);
 
-  useEffect(() => {
-    if (isExisting) {
-      setText(document.getElementById("username_or_email").value);
-    }
-  }, [isExisting]);
+  const [toggle, setToggle] = useState(false);
+  const [formData, setFormData] = useState({
+    email: "",
+    image: "",
+    username: "",
+    password: "",
+  });
 
-  const triggerUpload = () => {
-    document.getElementById("imageUpload").click();
-  };
-
-  const handleImageUpload = async (e) => {
-    setLoading(true);
-    const base64 = await imageToBase64(e.target.files[0]);
-
-    const response = await fetch(`${process.env.REACT_APP_BASE_URL}/user`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ image: base64 }),
-    });
-
-    const data = await response.json();
-    if (data.url) {
-      setLoading(false);
-      setImage(data.url);
-    }
-  };
-
-  const submitAuthForm = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
 
-    if (isExisting) {
-      if (emailRegex.test(text)) {
-        dispatch(login({ email: text, password }));
-      } else {
-        dispatch(login({ username: text, password }));
-      }
-
-      if (isAuthenticated()) {
-        navigate("/");
-      }
+    if (!toggle) {
+      dispatch(register(formData));
+      setToggle(true);
     } else {
-      dispatch(register({ username, email, password, image }));
+      if (formData.username) {
+        dispatch(
+          login({ username: formData.username, password: formData.password })
+        );
+      } else {
+        dispatch(login({ email: formData.email, password: formData.password }));
+      }
+      navigate("/");
     }
   };
 
   return (
     <div className="w-screen h-screen flex items-center justify-center">
       <form
+        onSubmit={handleSubmit}
         className="flex flex-col w-[25%] space-y-10 bg-gray-200 shadow-lg rounded-lg p-5"
-        onSubmit={submitAuthForm}
       >
+        {toggle && (
+          <>
+            {isExpired && (
+              <div className="w-full p-3 flex items-start justify-start bg-red-200 rounded-lg">
+                <span className="text-red-600 font-semibold text-md">
+                  Session Expired! Please Login Again.
+                </span>
+              </div>
+            )}
+          </>
+        )}
         <h1 className="text-center font-bold text-3xl">
-          {!isExisting ? "Register" : "Login"}
+          {!toggle ? "Register" : "Login"}
         </h1>
-        {!isExisting ? (
-          <FormGroup
-            name="username"
-            id="username"
-            placeholder="Enter Username"
-            type="text"
-            label="Username"
-            setUsername={setUsername}
-          />
-        ) : (
+        {toggle && (
           <FormGroup
             name="username_or_email"
             id="username_or_email"
             placeholder="Enter Username or Email"
             type="text"
             label="Username or Email"
-            setText={setText}
-            text={text}
+            formData={formData}
+            setFormData={setFormData}
           />
         )}
-        {!isExisting && (
-          <FormGroup
-            name="email"
-            id="email"
-            placeholder="Enter Email"
-            type="email"
-            label="Email"
-            setEmail={setEmail}
-          />
+        {!toggle && (
+          <>
+            <FormGroup
+              name="username"
+              id="username"
+              placeholder="Enter Username"
+              type="text"
+              label="Username"
+              formData={formData}
+              setFormData={setFormData}
+            />
+            <FormGroup
+              name="email"
+              id="email"
+              placeholder="Enter Email"
+              type="email"
+              label="Email"
+              formData={formData}
+              setFormData={setFormData}
+            />
+          </>
         )}
         <FormGroup
           name="password"
@@ -111,55 +99,26 @@ const Auth = () => {
           placeholder="Enter Password"
           type="password"
           label="Password"
-          setPassword={setPassword}
+          formData={formData}
+          setFormData={setFormData}
         />
-        {!isExisting && (
-          <>
-            <div className="w-full h-full rounded-md flex flex-col items-start justify-start space-y-3">
-              <label className="text-sm font-semibold" htmlFor="image">
-                Profile Image
-              </label>
-              <input
-                type="file"
-                name="image"
-                id="imageUpload"
-                className="hidden"
-                onChange={(e) => handleImageUpload(e)}
-              />
-              <button
-                type="button"
-                onClick={triggerUpload}
-                className={
-                  image ? "hidden" : "px-5 py-3 text-white font-semibold rounded-lg bg-black"
-                }
-              >
-                Upload Image
-              </button>
-            </div>
-            {loading ? (
-              <Loading />
-            ) : (
-              <div className="w-full flex items-center justify-center">
-                <img
-                  src={image}
-                  alt="profile"
-                  className={image ? "w-32 h-32 rounded-full" : "hidden"}
-                />
-              </div>
-            )}
-          </>
-        )}
+        <ImageUpload
+          toggle={toggle}
+          formData={formData}
+          setFormData={setFormData}
+        />
+
         <span
-          onClick={() => setIsExisting((prevState) => !prevState)}
+          onClick={() => setToggle((prevState) => !prevState)}
           className="text-center text-sm font-semibold text-blue-500 underline cursor-pointer"
         >
-          {!isExisting
+          {!toggle
             ? "Already have an account! Login."
             : "Don't Have and Account? Register!"}
         </span>
         <button
           type="submit"
-          className="px-5 py-3 bg-black rounded-lg text-white text-lg font-semibold hover:bg-white hover:border hover:border-black hover:text-black transition delay-150 ease-in-out"
+          className="px-5 py-3 bg-black rounded-lg text-white text-lg font-semibold hover:bg-white hover:border hover:border-black hover:text-black transition delay-0 ease-in"
         >
           Let's Go!
         </button>

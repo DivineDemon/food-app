@@ -6,21 +6,26 @@ const FormGroup = ({
   text,
   name,
   label,
-  setText,
-  setEmail,
+  formData,
   placeholder,
-  setUsername,
-  setPassword,
+  setFormData,
 }) => {
   const handleChange = (e) => {
     if (name === "email") {
-      setEmail(e.target.value);
+      setFormData({ ...formData, email: e.target.value });
     } else if (name === "username") {
-      setUsername(e.target.value);
+      setFormData({ ...formData, username: e.target.value });
     } else if (name === "username_or_email") {
-      setText(e.target.value);
+      const isEmail = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/.test(
+        e.target.value
+      );
+      if (isEmail) {
+        setFormData({ ...formData, email: e.target.value });
+      } else {
+        setFormData({ ...formData, username: e.target.value });
+      }
     } else {
-      setPassword(e.target.value);
+      setFormData({ ...formData, password: e.target.value });
     }
   };
   return (

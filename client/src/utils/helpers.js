@@ -1,20 +1,9 @@
-export const isAuthenticated = () => {
-  let user = null;
-  const savedUser = JSON.parse(
+export const getUserToken = () => {
+  const token = JSON.parse(
     JSON.parse(localStorage.getItem("persist:root")).user
-  ).user;
+  ).token;
 
-  if (Object.keys(savedUser).length !== 0) {
-    user = JSON.parse(
-      JSON.parse(localStorage.getItem("persist:root")).user
-    ).user;
-  }
-
-  if (Object.keys(user).length !== 0) {
-    return true;
-  } else {
-    return false;
-  }
+  return token;
 };
 
 export const imageToBase64 = (image) => {

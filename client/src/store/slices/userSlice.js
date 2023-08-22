@@ -5,6 +5,7 @@ const initialState = {
   loading: false,
   error: false,
   user: {},
+  token: "",
 };
 
 const userSlice = createSlice({
@@ -30,7 +31,8 @@ const userSlice = createSlice({
       })
       .addCase(login.fulfilled, (state, action) => {
         state.loading = false;
-        Object.assign(state.user, action.payload);
+        Object.assign(state.user, action.payload.user);
+        state.token = action.payload.token;
         state.error = null;
       })
       .addCase(login.rejected, (state, action) => {
