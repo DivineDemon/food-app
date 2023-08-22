@@ -1,7 +1,7 @@
 import { useJwt } from "react-jwt";
-import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 import { register, login } from "../store/api";
 import FormGroup from "../components/FormGroup";
@@ -13,6 +13,7 @@ const Auth = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { isExpired } = useJwt(token);
+  const isLoggedOut = useSelector((state) => state.user.isLoggedOut);
 
   const [toggle, setToggle] = useState(false);
   const [formData, setFormData] = useState({
@@ -22,7 +23,11 @@ const Auth = () => {
     password: "",
   });
   useEffect(() => {
-    if (!isExpired) navigate("/");
+    if (isLoggedOut) {
+      setToggle(true);
+    } else {
+      if (!isExpired) navigate("/");
+    }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

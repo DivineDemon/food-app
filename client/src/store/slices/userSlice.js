@@ -6,12 +6,17 @@ const initialState = {
   error: false,
   user: {},
   token: "",
+  isLoggedOut: false,
 };
 
 const userSlice = createSlice({
   name: "user",
   initialState,
-  reducers: {},
+  reducers: {
+    setLoggedOut: (state) => {
+      state.isLoggedOut = !state.isLoggedOut;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(register.pending, (state) => {
@@ -42,4 +47,5 @@ const userSlice = createSlice({
   },
 });
 
+export const { setLoggedOut } = userSlice.actions;
 export default userSlice.reducer;
