@@ -4,9 +4,9 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   loading: false,
   error: false,
-  message: "",
+  message: null,
   categories: [],
-  category: "",
+  category: null,
 };
 
 const categorySlice = createSlice({
