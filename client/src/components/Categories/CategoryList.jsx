@@ -2,12 +2,15 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import Loading from "../Loading";
+import NotFound from "../NotFound";
 import CategoryItem from "./CategoryItem";
 import { fetchCategories } from "../../store/api";
 
 const CategoryList = () => {
   const dispatch = useDispatch();
-  const { loading, categories } = useSelector((state) => state.category);
+  const { loading, error, categories, message } = useSelector(
+    (state) => state.category
+  );
 
   useEffect(() => {
     dispatch(fetchCategories());
@@ -16,6 +19,10 @@ const CategoryList = () => {
 
   if (loading) {
     return <Loading />;
+  }
+
+  if (error) {
+    return <NotFound message={message} />;
   }
 
   if (categories.length !== 0) {
