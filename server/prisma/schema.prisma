@@ -7,34 +7,72 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model category {
-  id       Int    @id @default(autoincrement())
-  name     String @db.Text
-  user_id  Int
-  user     user  @relation(fields: [user_id], references: [id], onDelete: Cascade, map: "user_id")
-  item     item[]
+model address {
+  ID      Int    @id @default(autoincrement())
+  user_id Int
+  type    String @db.Text
+  address String @db.Text
+  user    user   @relation(fields: [user_id], references: [ID], onDelete: Cascade, map: "user_id")
 
   @@index([user_id], map: "user_id")
 }
 
+model category {
+  ID         Int    @id @default(autoincrement())
+  name       String @db.Text
+  creator_id Int
+  user       user   @relation(fields: [creator_id], references: [ID], onDelete: Cascade, map: "creator_id")
+  item       item[]
+
+  @@index([creator_id], map: "creator_id")
+}
+
 model item {
-  id          Int      @id @default(autoincrement())
-  name        String   @db.Text
-  description String   @db.Text
-  price       Float    @db.Float
-  image       String   @db.Text
+  ID          Int           @id @default(autoincrement())
+  name        String        @db.Text
   category_id Int
-  category    category @relation(fields: [category_id], references: [id], onDelete: Cascade, map: "category_id")
+  price       Float
+  description String?       @db.Text
+  image       String        @db.Text
+  category    category      @relation(fields: [category_id], references: [ID], onDelete: Cascade, map: "category_id")
+  order_items order_items[]
 
   @@index([category_id], map: "category_id")
 }
 
+model order {
+  ID          Int           @id @default(autoincrement())
+  user_id     Int
+  total       Float?
+  user        user          @relation(fields: [user_id], references: [ID], onDelete: Cascade, map: "user")
+  order_items order_items[]
+
+  @@index([user_id], map: "user")
+}
+
+model order_items {
+  ID       Int   @id @default(autoincrement())
+  order_id Int
+  item_id  Int
+  quantity Int
+  item     item  @relation(fields: [item_id], references: [ID], onDelete: Cascade, map: "item_id")
+  order    order @relation(fields: [order_id], references: [ID], onDelete: Cascade, map: "order_id")
+
+  @@index([item_id], map: "item_id")
+  @@index([order_id], map: "order_id")
+}
+
 model user {
-  id       Int        @id @default(autoincrement())
-  username String     @unique(map: "username") @db.VarChar(50)
-  email    String     @unique(map: "email") @db.VarChar(50)
+  ID       Int        @id @default(autoincrement())
+  username String     @db.VarChar(50)
   password String     @db.Text
-  type     String
-  image    String
+  phone    String     @db.Text
+  email    String     @db.VarChar(50)
+  type     String     @db.Text
+  image    String?    @db.Text
+  address  address[]
   category category[]
+  order    order[]
+
+  @@unique([username, email], map: "username")
 }

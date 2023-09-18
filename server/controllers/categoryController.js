@@ -29,7 +29,7 @@ const getCategory = async (req, res) => {
   try {
     const response = await prisma.category.findUnique({
       where: {
-        id: Number(req.query.category_id),
+        ID: Number(req.query.category_id),
       },
     });
 
@@ -62,7 +62,7 @@ const addCategory = async (req, res) => {
         data: {
           name,
           user: {
-            connect: { id: req.user.id },
+            connect: { ID: req.user.id },
           },
         },
       });
@@ -92,7 +92,7 @@ const deleteCategory = async (req, res) => {
     if (req.user.type === "admin") {
       const response = await prisma.category.delete({
         where: {
-          id: Number(req.query.category_id),
+          ID: Number(req.query.category_id),
         },
       });
 
@@ -121,7 +121,7 @@ const updateCategory = async (req, res) => {
     if (req.user.type === "admin") {
       const response = await prisma.category.update({
         where: {
-          id: Number(req.query.category_id),
+          ID: Number(req.query.category_id),
         },
         data: req.body,
       });

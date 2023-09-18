@@ -7,7 +7,7 @@ const SECRET = "food-web-application" || process.env.JWT_SECRET;
 
 const register = async (req, res) => {
   try {
-    const { username, email, password, image } = req.body;
+    const { username, password, phone, email, type, image } = req.body;
     const encryptedPassword = bcrypt.hashSync(password, 10, (err, hash) => {
       if (!err) {
         return hash;
@@ -23,9 +23,10 @@ const register = async (req, res) => {
     const response = await prisma.user.create({
       data: {
         username,
-        email,
         password: encryptedPassword,
-        type: "user",
+        phone,
+        email,
+        type,
         image,
       },
     });
@@ -33,7 +34,7 @@ const register = async (req, res) => {
     res.status(200).json({
       status: true,
       message: "Registered User Successfully!",
-      user_id: response.id,
+      user_id: response.ID,
     });
   } catch (error) {
     res.status(500).json({
@@ -51,7 +52,7 @@ const login = async (req, res) => {
 
     // If User Enters Username
     if (username) {
-      user = await prisma.user.findUnique({
+      user = await prisma.user.findFirst({
         where: {
           username,
         },
@@ -60,7 +61,7 @@ const login = async (req, res) => {
 
     // If User Enters Email
     if (email) {
-      user = await prisma.user.findUnique({
+      user = await prisma.user.findFirst({
         where: {
           email,
         },
@@ -71,7 +72,7 @@ const login = async (req, res) => {
       // Generate JWT Token
       const userToken = jwt.sign(
         {
-          id: user.id,
+          id: user.ID,
           email: user.email,
           type: user.type,
         },

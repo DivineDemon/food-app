@@ -30,7 +30,7 @@ const getCategoryItems = async (req, res) => {
     const response = await prisma.item.findMany({
       where: {
         category: {
-          id: Number(req.query.category_id),
+          ID: Number(req.query.category_id),
         },
       },
     });
@@ -60,7 +60,7 @@ const getItem = async (req, res) => {
   try {
     const response = await prisma.item.findUnique({
       where: {
-        id: Number(req.query.item_id),
+        ID: Number(req.query.item_id),
       },
     });
 
@@ -96,7 +96,7 @@ const addItem = async (req, res) => {
           price,
           image,
           category: {
-            connect: { id: Number(req.query.category_id) },
+            connect: { ID: Number(req.query.category_id) },
           },
         },
       });
@@ -126,7 +126,7 @@ const deleteItem = async (req, res) => {
     if (req.user.type === "admin") {
       const response = await prisma.item.delete({
         where: {
-          id: Number(req.query.item_id),
+          ID: Number(req.query.item_id),
         },
       });
 
@@ -155,7 +155,7 @@ const updateItem = async (req, res) => {
     if (req.user.type === "admin") {
       const response = await prisma.item.update({
         where: {
-          id: Number(req.query.item_id),
+          ID: Number(req.query.item_id),
         },
         data: req.body,
       });

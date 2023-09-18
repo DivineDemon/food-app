@@ -14,7 +14,7 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     setLoggedOut: (state) => {
-      state.isLoggedOut = !state.isLoggedOut;
+      state.isLoggedOut = false;
     },
   },
   extraReducers: (builder) => {

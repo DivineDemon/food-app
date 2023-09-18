@@ -22,13 +22,18 @@ const Auth = () => {
     username: "",
     password: "",
   });
+  
   useEffect(() => {
     if (isLoggedOut) {
       setToggle(true);
     } else {
-      if (!isExpired) navigate("/");
+      if (!isExpired) {
+        setToggle(true);
+      } else {
+        setToggle(false);
+      }
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleSubmit = (e) => {
