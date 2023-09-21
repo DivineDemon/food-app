@@ -81,6 +81,7 @@ const login = async (req, res) => {
           expiresIn: "30d",
         }
       );
+
       // Send User Data
       res.status(200).json({
         success: true,
