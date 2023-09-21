@@ -1,3 +1,4 @@
+import { useJwt } from "react-jwt";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaTelegramPlane } from "react-icons/fa";
@@ -11,6 +12,7 @@ import ImageUpload from "../components/ImageUpload";
 const Auth = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
   const [formData, setFormData] = useState({
     username: "",
     email: "",
@@ -18,8 +20,10 @@ const Auth = () => {
     image: "",
     phone: "",
   });
-  const { loading, token } = useSelector((state) => state.user);
   const [toggle, setToggle] = useState(false); // False: Register | True: Login
+
+  const { loading, token } = useSelector((state) => state.user);
+  const { isExpired } = useJwt(token);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -46,9 +50,13 @@ const Auth = () => {
   };
 
   useEffect(() => {
-    if (token) navigate("/");
+    if (token) {
+      if (!isExpired) {
+        navigate("/");
+      }
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [token]);
+  }, [token, isExpired]);
 
   return (
     <div className="w-screen h-screen flex items-center justify-center">
@@ -88,13 +96,20 @@ const Auth = () => {
                 />
               </>
             ) : (
-              <FormGroup
-                label="Username or Email"
-                type="text"
-                placeholder="Enter Username or Email"
-                formData={formData}
-                setFormData={setFormData}
-              />
+              <>
+                {isExpired && (
+                  <div className="w-full rounded-lg bg-red-200 text-red-500 px-5 py-3 font-semibold text-center">
+                    <span>Session Expired! Please Login Again!</span>
+                  </div>
+                )}
+                <FormGroup
+                  label="Username or Email"
+                  type="text"
+                  placeholder="Enter Username or Email"
+                  formData={formData}
+                  setFormData={setFormData}
+                />
+              </>
             )}
             <FormGroup
               label="Password"
