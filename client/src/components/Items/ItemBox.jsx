@@ -13,9 +13,16 @@ const ItemBox = ({ item }) => {
         <p className="text-sm font-semibold text-gray-400">
           {item.description}
         </p>
+        <hr className="w-full border-t border-red-500" />
         <p>
           Rs. <span className="font-bold">{item.price}/-</span>
         </p>
+        <button
+          type="button"
+          className="w-full px-5 py-3 text-white font-semibold rounded-lg bg-red-600 flex flex-row items-center justify-center space-x-3"
+        >
+          <span>Add to Cart</span>
+        </button>
       </div>
     </div>
   );
