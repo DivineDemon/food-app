@@ -6,6 +6,7 @@ const {
   deleteItem,
   updateItem,
   getAllItems,
+  searchItems,
   getCategoryItems,
 } = require("../controllers/itemController");
 
@@ -19,6 +20,7 @@ router
   .delete(verifyToken, deleteItem);
 
 router.get("/all", getAllItems);
+router.get("/search", searchItems);
 router.get("/category", getCategoryItems);
 
 module.exports = router;

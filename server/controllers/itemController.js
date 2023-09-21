@@ -1,27 +1,18 @@
 const { PrismaClient } = require("@prisma/client");
+const { sendResponse } = require("../utils/responseHandler");
+
 const prisma = new PrismaClient();
 
 const getAllItems = async (_, res) => {
   try {
     const response = await prisma.item.findMany();
     if (response.length <= 0) {
-      res.status(404).json({
-        success: false,
-        message: "Items Not Found!",
-      });
+      sendResponse(res, 404);
     } else {
-      res.status(200).json({
-        status: true,
-        message: "Retrieved All Items!",
-        response,
-      });
+      sendResponse(res, 200, response);
     }
   } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: "Please Try Again!",
-      error: error.message,
-    });
+    sendResponse(res, 500, error);
   }
 };
 
@@ -36,23 +27,12 @@ const getCategoryItems = async (req, res) => {
     });
 
     if (response.length <= 0) {
-      res.status(404).json({
-        success: false,
-        message: "Items Not Found!",
-      });
+      sendResponse(res, 404);
     } else {
-      res.status(200).json({
-        status: true,
-        message: "Retrieved All Items!",
-        response,
-      });
+      sendResponse(res, 200, response);
     }
   } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: "Please Try Again!",
-      error: error.message,
-    });
+    sendResponse(res, 500, error);
   }
 };
 
@@ -65,23 +45,12 @@ const getItem = async (req, res) => {
     });
 
     if (response.length <= 0) {
-      res.status(404).json({
-        success: false,
-        message: "Item Not Found!",
-      });
+      sendResponse(res, 404);
     } else {
-      res.status(200).json({
-        status: true,
-        message: "Retrieved Item!",
-        response,
-      });
+      sendResponse(res, 200, response);
     }
   } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: "Please Try Again!",
-      error: error.message,
-    });
+    sendResponse(res, 500, error);
   }
 };
 
@@ -89,7 +58,7 @@ const addItem = async (req, res) => {
   try {
     const { name, description, price, image } = req.body;
     if (req.user.type === "admin") {
-      const response = await prisma.item.create({
+      await prisma.item.create({
         data: {
           name,
           description,
@@ -101,23 +70,12 @@ const addItem = async (req, res) => {
         },
       });
 
-      res.status(200).json({
-        status: true,
-        message: "Item Added Successfully!",
-        response,
-      });
+      sendResponse(res, 201);
     } else {
-      res.status(403).json({
-        success: false,
-        message: "User Forbidden!",
-      });
+      sendResponse(res, 403);
     }
   } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: "Please Try Again!",
-      error: error.message,
-    });
+    sendResponse(res, 500, error);
   }
 };
 
@@ -130,23 +88,12 @@ const deleteItem = async (req, res) => {
         },
       });
 
-      res.status(200).json({
-        status: true,
-        message: "Item Deleted Successfully!",
-        response,
-      });
+      sendResponse(res, 200, response);
     } else {
-      res.status(403).json({
-        success: false,
-        message: "User Forbidden!",
-      });
+      sendResponse(res, 403);
     }
   } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: "Please Try Again!",
-      error: error.message,
-    });
+    sendResponse(res, 500, error);
   }
 };
 
@@ -160,23 +107,32 @@ const updateItem = async (req, res) => {
         data: req.body,
       });
 
-      res.status(200).json({
-        status: true,
-        message: "Item Updated Successfully!",
-        response,
-      });
+      sendResponse(res, 200, response);
     } else {
-      res.status(403).json({
-        success: false,
-        message: "User Forbidden!",
-      });
+      sendResponse(res, 403);
     }
   } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: "Please Try Again!",
-      error: error.message,
+    sendResponse(res, 500, error);
+  }
+};
+
+const searchItems = async (req, res) => {
+  try {
+    const response = await prisma.item.findMany({
+      where: {
+        name: {
+          contains: req.query.key,
+        },
+      },
     });
+
+    if (response.length <= 0) {
+      sendResponse(res, 404);
+    } else {
+      sendResponse(res, 200, response);
+    }
+  } catch (error) {
+    sendResponse(res, 500, error);
   }
 };
 
@@ -186,5 +142,6 @@ module.exports = {
   deleteItem,
   updateItem,
   getAllItems,
+  searchItems,
   getCategoryItems,
 };

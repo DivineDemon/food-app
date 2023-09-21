@@ -2,8 +2,9 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const { PrismaClient } = require("@prisma/client");
 
+const { sendResponse } = require("../utils/responseHandler");
+
 const prisma = new PrismaClient();
-const SECRET = "food-web-application" || process.env.JWT_SECRET;
 
 const register = async (req, res) => {
   try {
@@ -12,15 +13,11 @@ const register = async (req, res) => {
       if (!err) {
         return hash;
       } else {
-        res.status(400).json({
-          status: false,
-          message: "Password Encryption Failed!",
-          err,
-        });
+        sendResponse(res, 400, err);
       }
     });
 
-    const response = await prisma.user.create({
+    await prisma.user.create({
       data: {
         username,
         password: encryptedPassword,
@@ -31,17 +28,9 @@ const register = async (req, res) => {
       },
     });
 
-    res.status(200).json({
-      status: true,
-      message: "Registered User Successfully!",
-      user_id: response.ID,
-    });
+    sendResponse(res, 201);
   } catch (error) {
-    res.status(500).json({
-      status: false,
-      message: "Please Try Again!",
-      error: error.message,
-    });
+    sendResponse(res, 500, error);
   }
 };
 
@@ -76,31 +65,22 @@ const login = async (req, res) => {
           email: user.email,
           type: user.type,
         },
-        SECRET,
+        process.env.JWT_SECRET,
         {
           expiresIn: "30d",
         }
       );
 
       // Send User Data
-      res.status(200).json({
-        success: true,
-        message: "User Logged In!",
+      sendResponse(res, 200, {
         user,
         token: userToken,
       });
     } else {
-      res.status(401).json({
-        status: false,
-        message: "Username or Password Incorrect!",
-      });
+      sendResponse(res, 401);
     }
   } catch (error) {
-    res.status(500).json({
-      status: false,
-      message: "Please Try Again!",
-      error: error.message,
-    });
+    sendResponse(res, 500, error);
   }
 };
 

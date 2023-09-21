@@ -1,27 +1,18 @@
 const { PrismaClient } = require("@prisma/client");
+const { sendResponse } = require("../utils/responseHandler");
+
 const prisma = new PrismaClient();
 
 const getAllCategories = async (_, res) => {
   try {
     const response = await prisma.category.findMany();
     if (response.length <= 0) {
-      res.status(404).json({
-        success: false,
-        message: "Categories Not Found!",
-      });
+      sendResponse(res, 404);
     } else {
-      res.status(200).json({
-        status: true,
-        message: "Retrieved All Categories!",
-        response,
-      });
+      sendResponse(res, 200, response);
     }
   } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: "Please Try Again!",
-      error: error.message,
-    });
+    sendResponse(res, 500, error);
   }
 };
 
@@ -34,31 +25,21 @@ const getCategory = async (req, res) => {
     });
 
     if (response.length <= 0) {
-      res.status(404).json({
-        success: false,
-        message: "Category Not Found!",
-      });
+      sendResponse(res, 404);
     } else {
-      res.status(200).json({
-        status: true,
-        message: "Retrieved Category!",
-        response,
-      });
+      sendResponse(res, 200, response);
     }
   } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: "Please Try Again!",
-      error: error.message,
-    });
+    sendResponse(res, 500, error);
   }
 };
 
 const addCategory = async (req, res) => {
   try {
     const { name } = req.body;
+
     if (req.user.type === "admin") {
-      const response = await prisma.category.create({
+      await prisma.category.create({
         data: {
           name,
           user: {
@@ -67,23 +48,12 @@ const addCategory = async (req, res) => {
         },
       });
 
-      res.status(200).json({
-        status: true,
-        message: "Category Added Successfully!",
-        response,
-      });
+      sendResponse(res, 201);
     } else {
-      res.status(403).json({
-        success: false,
-        message: "User Forbidden!",
-      });
+      sendResponse(res, 403);
     }
   } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: "Please Try Again!",
-      error: error.message,
-    });
+    sendResponse(res, 500, error);
   }
 };
 
@@ -96,23 +66,12 @@ const deleteCategory = async (req, res) => {
         },
       });
 
-      res.status(200).json({
-        status: true,
-        message: "Category Deleted Successfully!",
-        response,
-      });
+      sendResponse(res, 200, response);
     } else {
-      res.status(403).json({
-        success: false,
-        message: "User Forbidden!",
-      });
+      sendResponse(res, 403);
     }
   } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: "Please Try Again!",
-      error: error.message,
-    });
+    sendResponse(res, 500, error);
   }
 };
 
@@ -126,23 +85,12 @@ const updateCategory = async (req, res) => {
         data: req.body,
       });
 
-      res.status(200).json({
-        status: true,
-        message: "Category Updated Successfully!",
-        response,
-      });
+      sendResponse(res, 200, response);
     } else {
-      res.status(403).json({
-        success: false,
-        message: "User Forbidden!"
-      })
+      sendResponse(res, 403);
     }
   } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: "Please Try Again!",
-      error: error.message,
-    });
+    sendResponse(res, 500, error);
   }
 };
 
