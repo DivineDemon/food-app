@@ -1,11 +1,13 @@
-import React from "react";
+import { useState } from "react";
 import { useSelector } from "react-redux";
-import { AiOutlineSearch } from "react-icons/ai";
 import { FaUserCircle, FaShoppingCart } from "react-icons/fa";
 
+import Search from "./Search";
 import Logo from "../assets/logo.jpg";
+import Dropdown from "./Dropdown";
 
 const Navbar = () => {
+  const [active, setActive] = useState(false);
   const { user } = useSelector((state) => state.user);
 
   return (
@@ -15,11 +17,14 @@ const Navbar = () => {
       {/* Items */}
       <ul className="flex flex-row items-center justify-center space-x-10">
         <li>
-          <AiOutlineSearch className="w-8 h-8" />
+          <Search />
         </li>
         <li>
           {user ? (
-            <div className="flex flex-row items-center justify-center space-x-2">
+            <div
+              onClick={() => setActive((prev) => !prev)}
+              className="relative flex flex-row items-center justify-center space-x-2 cursor-pointer"
+            >
               <img
                 src={user.image}
                 alt="profile"
@@ -29,9 +34,15 @@ const Navbar = () => {
                 <span>{user.username}</span>
                 <span>{user.email}</span>
               </div>
+              {active && (
+                <Dropdown options={["Profile", "Recent Orders", "Logout"]} />
+              )}
             </div>
           ) : (
-            <FaUserCircle className="w-8 h-8" />
+            <div className="relative">
+              <FaUserCircle className="w-8 h-8" />
+              {active && <Dropdown options={["Login"]} />}
+            </div>
           )}
         </li>
         <li>
