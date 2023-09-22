@@ -22,7 +22,7 @@ const Auth = () => {
   });
   const [toggle, setToggle] = useState(false); // False: Register | True: Login
 
-  const { loading, token } = useSelector((state) => state.user);
+  const { loading, token, error } = useSelector((state) => state.user);
   const { isExpired } = useJwt(token);
 
   const handleSubmit = (e) => {
@@ -46,6 +46,9 @@ const Auth = () => {
       }
     } else {
       dispatch(register(formData));
+      if (loading === false && error === false) {
+        setToggle(true);
+      }
     }
   };
 

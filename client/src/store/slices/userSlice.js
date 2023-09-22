@@ -16,9 +16,8 @@ const userSlice = createSlice({
       .addCase(register.pending, (state) => {
         state.loading = true;
       })
-      .addCase(register.fulfilled, (state, action) => {
+      .addCase(register.fulfilled, (state) => {
         state.loading = false;
-        Object.assign(state.user, action.payload);
         state.error = null;
       })
       .addCase(register.rejected, (state, action) => {

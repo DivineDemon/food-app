@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import Loading from "../Loading";
@@ -11,9 +11,11 @@ const ItemList = () => {
   const { loading, error, items, message } = useSelector((state) => state.item);
 
   useEffect(() => {
-    dispatch(fetchItems());
+    if (items.length === 0) {
+      dispatch(fetchItems());
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [items, loading]);
 
   if (loading) {
     return <Loading />;

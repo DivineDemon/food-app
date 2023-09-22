@@ -1,7 +1,10 @@
 import { useState } from "react";
+import { useDispatch } from "react-redux";
 import { AiOutlineSearch } from "react-icons/ai";
+import { fetchSearchItems } from "../store/api";
 
 const Search = () => {
+  const dispatch = useDispatch();
   const [key, setKey] = useState(null);
   const [active, setActive] = useState(false);
 
@@ -13,8 +16,7 @@ const Search = () => {
     e.preventDefault();
     setActive(false);
 
-    // API Call
-    console.log(key);
+    dispatch(fetchSearchItems(key));
   };
 
   return (

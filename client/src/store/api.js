@@ -1,7 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
-export const register = createAsyncThunk("user/Register", async (userData) => {
-  const response = await fetch(
+export const register = createAsyncThunk("register", async (userData) => {
+  let response = await fetch(
     `${process.env.REACT_APP_BASE_URL}/auth/register`,
     {
       method: "POST",
@@ -12,12 +12,12 @@ export const register = createAsyncThunk("user/Register", async (userData) => {
     }
   );
 
-  const data = await response.json();
-  return data.response;
+  response = await response.json();
+  return response.data;
 });
 
-export const login = createAsyncThunk("user/Login", async (userData) => {
-  const response = await fetch(`${process.env.REACT_APP_BASE_URL}/auth/login`, {
+export const login = createAsyncThunk("login", async (userData) => {
+  let response = await fetch(`${process.env.REACT_APP_BASE_URL}/auth/login`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -25,27 +25,51 @@ export const login = createAsyncThunk("user/Login", async (userData) => {
     body: JSON.stringify(userData),
   });
 
-  const data = await response.json();
-  return data;
+  response = await response.json();
+  return response.data;
 });
 
-export const fetchItems = createAsyncThunk("get/Items", async () => {
-  const response = await fetch(`${process.env.REACT_APP_BASE_URL}/item/all`, {
+export const fetchItems = createAsyncThunk("items", async () => {
+  let response = await fetch(`${process.env.REACT_APP_BASE_URL}/item/all`, {
     method: "GET",
   });
 
-  const data = await response.json();
-  return data.response;
+  response = await response.json();
+  return response.data;
 });
 
-export const fetchCategories = createAsyncThunk("get/Categories", async () => {
-  const response = await fetch(
-    `${process.env.REACT_APP_BASE_URL}/category/all`,
+export const fetchCategories = createAsyncThunk("categories", async () => {
+  let response = await fetch(`${process.env.REACT_APP_BASE_URL}/category/all`, {
+    method: "GET",
+  });
+
+  response = await response.json();
+  return response.data;
+});
+
+export const fetchCategoryItems = createAsyncThunk(
+  "categoryItems",
+  async (id) => {
+    let response = await fetch(
+      `${process.env.REACT_APP_BASE_URL}/item/category?category_id=${id}`,
+      {
+        method: "GET",
+      }
+    );
+
+    response = await response.json();
+    return response.data;
+  }
+);
+
+export const fetchSearchItems = createAsyncThunk("searchItems", async (key) => {
+  let response = await fetch(
+    `${process.env.REACT_APP_BASE_URL}/item/search?key=${key}`,
     {
       method: "GET",
     }
   );
 
-  const data = await response.json();
-  return data.response;
+  response = await response.json();
+  return response.data;
 });
