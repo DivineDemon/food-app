@@ -18,11 +18,19 @@ const CategoryList = () => {
   }, []);
 
   if (loading) {
-    return <Loading />;
+    return (
+      <div className="w-full flex items-center justify-center">
+        <Loading />
+      </div>
+    );
   }
 
   if (error) {
-    return <NotFound message={message} />;
+    return (
+      <div className="w-full flex items-center justify-center">
+        <NotFound message={message} />
+      </div>
+    );
   }
 
   if (categories.length !== 0) {

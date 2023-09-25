@@ -24,7 +24,7 @@ const Search = () => {
       <div
         className={
           active
-            ? "flex flex-row items-center justify-center space-x-3 border border-black rounded-lg transition"
+            ? "flex flex-row items-center justify-center space-x-3 border border-black rounded-lg delay-150 ease-in"
             : "flex flex-row items-center justify-center space-x-3"
         }
       >
@@ -33,7 +33,7 @@ const Search = () => {
             onMouseEnter={() => setActive(true)}
             className={
               active
-                ? "w-8 h-8 p-1 border-r border-black bg-gray-300 rounded-l-lg cursor-pointer transition"
+                ? "w-8 h-8 p-1 border-r border-black bg-gray-300 rounded-l-lg cursor-pointer delay-150 ease-in"
                 : "w-8 h-8 cursor-pointer"
             }
           />
@@ -43,7 +43,7 @@ const Search = () => {
           placeholder="Search"
           className={
             active
-              ? "border-0 focus:border-0 focus:outline-0 w-full h-full text-sm transition"
+              ? "border-0 focus:border-0 focus:outline-0 w-full h-full text-sm delay-150 ease-in"
               : "hidden"
           }
           onChange={handleChange}

@@ -1,17 +1,24 @@
 import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { FaUserCircle, FaShoppingCart } from "react-icons/fa";
 
 import Search from "./Search";
-import Logo from "../assets/logo.jpg";
 import Dropdown from "./Dropdown";
+import Logo from "../assets/logo.jpg";
+import { toggleDrawer } from "../store/slices/orderSlice";
 
 const Navbar = () => {
+  const dispatch = useDispatch();
   const [active, setActive] = useState(false);
   const { user } = useSelector((state) => state.user);
+  const { quantity } = useSelector((state) => state.order);
+
+  const handleToggle = () => {
+    dispatch(toggleDrawer());
+  };
 
   return (
-    <nav className="fixed top-0 z-50 bg-white w-screen px-10 py-3 flex flex-row items-center justify-between shadow-lg">
+    <nav className="fixed top-0 z-40 bg-white w-screen px-10 py-3 flex flex-row items-center justify-between shadow-lg">
       {/* Logo */}
       <img src={Logo} alt="logo" className="w-12 h-12 rounded-full" />
       {/* Items */}
@@ -46,10 +53,10 @@ const Navbar = () => {
           )}
         </li>
         <li>
-          <div className="relative">
-            <FaShoppingCart className="w-8 h-8" />
+          <div className="relative cursor-pointer">
+            <FaShoppingCart className="w-8 h-8" onClick={handleToggle} />
             <span className="absolute top-[-10px] right-[-10px] rounded-full w-6 h-6 bg-red-500 text-white text-xs font-semibold flex items-center justify-center">
-              3
+              {quantity}
             </span>
           </div>
         </li>

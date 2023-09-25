@@ -11,6 +11,7 @@ const ItemList = () => {
   const { loading, error, items, message } = useSelector((state) => state.item);
 
   useEffect(() => {
+
     if (items.length === 0) {
       dispatch(fetchItems());
     }
@@ -18,11 +19,19 @@ const ItemList = () => {
   }, [items, loading]);
 
   if (loading) {
-    return <Loading />;
+    return (
+      <div className="w-full flex items-center justify-center">
+        <Loading />
+      </div>
+    );
   }
 
   if (error) {
-    return <NotFound message={message} />;
+    return (
+      <div className="w-full flex items-center justify-center">
+        <NotFound message={message} />
+      </div>
+    );
   }
 
   if (items.length !== 0) {

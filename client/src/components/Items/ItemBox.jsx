@@ -1,6 +1,14 @@
 import React from "react";
+import { useDispatch } from "react-redux";
+import { setOrder } from "../../store/slices/orderSlice";
 
 const ItemBox = ({ item }) => {
+  const dispatch = useDispatch();
+
+  const handleOrder = () => {
+    dispatch(setOrder(item));
+  };
+
   return (
     <div className="w-[350px] rounded-lg border border-yellow-500 flex flex-col items-center justify-center">
       <img
@@ -19,6 +27,7 @@ const ItemBox = ({ item }) => {
         </p>
         <button
           type="button"
+          onClick={handleOrder}
           className="w-full px-5 py-3 text-white font-semibold rounded-lg bg-red-600 flex flex-row items-center justify-center space-x-3"
         >
           <span>Add to Cart</span>

@@ -4,6 +4,7 @@ const initialState = {
   total: 0,
   orderItems: [],
   quantity: 0,
+  isActive: false,
 };
 
 const orderSlice = createSlice({
@@ -11,15 +12,18 @@ const orderSlice = createSlice({
   initialState,
   reducers: {
     setOrder: (state, action) => {
-      state.orderItems.push(action.payload.item);
+      state.orderItems.push(action.payload);
       state.quantity += 1;
-      state.total += action.payload.item.price;
+      state.total += action.payload.price;
     },
     getOrder: (state) => {
       return state.orderItems;
     },
+    toggleDrawer: (state) => {
+      state.isActive = !state.isActive;
+    }
   },
 });
 
-export const { setOrder, getOrder } = orderSlice.actions;
+export const { setOrder, getOrder, toggleDrawer } = orderSlice.actions;
 export default orderSlice.reducer;
