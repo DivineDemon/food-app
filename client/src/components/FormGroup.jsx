@@ -1,5 +1,3 @@
-import React from "react";
-
 const FormGroup = ({ label, placeholder, type, formData, setFormData }) => {
   const handleChange = (e) => {
     switch (label) {
