@@ -6,7 +6,10 @@ const ItemBox = ({ item }) => {
   const dispatch = useDispatch();
 
   const handleOrder = () => {
-    dispatch(setOrder(item));
+    let tempItem = {};
+    Object.assign(tempItem, item);
+    tempItem.quantity = 1;
+    dispatch(setOrder(tempItem));
   };
 
   return (

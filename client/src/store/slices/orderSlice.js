@@ -12,18 +12,28 @@ const orderSlice = createSlice({
   initialState,
   reducers: {
     setOrder: (state, action) => {
-      state.orderItems.push(action.payload);
+      let item = action.payload;
+      state.orderItems.push(item);
       state.quantity += 1;
-      state.total += action.payload.price;
+      state.total += item.price;
     },
     getOrder: (state) => {
       return state.orderItems;
     },
     toggleDrawer: (state) => {
       state.isActive = !state.isActive;
-    }
+    },
+    deleteItem: (state, action) => {
+      let filteredOrder = state.orderItems.filter(
+        (item) => item.ID !== action.payload.ID
+      );
+      state.orderItems = filteredOrder;
+      state.total -= action.payload.price;
+      state.quantity = filteredOrder.length;
+    },
   },
 });
 
-export const { setOrder, getOrder, toggleDrawer } = orderSlice.actions;
+export const { setOrder, getOrder, toggleDrawer, deleteItem } =
+  orderSlice.actions;
 export default orderSlice.reducer;

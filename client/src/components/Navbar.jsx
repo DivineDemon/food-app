@@ -27,7 +27,7 @@ const Navbar = () => {
           <Search />
         </li>
         <li>
-          {user ? (
+          {Object.keys(user).length !== 0 ? (
             <div
               onClick={() => setActive((prev) => !prev)}
               className="relative flex flex-row items-center justify-center space-x-2 cursor-pointer"

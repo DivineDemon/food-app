@@ -22,22 +22,24 @@ const CartList = () => {
             onClick={handleClose}
           />
         </div>
-        <div className="w-full h-full p-5 flex flex-col items-center justify-center space-y-3">
-          {orderItems.map((item, idx) => (
-            <CartItem key={idx} item={item} />
-          ))}
-          <div className="w-full flex flex-row items-center justify-between">
-            <span className="w-full text-center text-lg font-bold">
-              Grand Total: Rs.{total}
-            </span>
-            <button
-              type="button"
-              className="w-full px-5 py-3 text-white font-semibold rounded-lg bg-red-600 flex flex-row items-center justify-center space-x-3"
-            >
-              <span>Pait Bharlo!</span>
-            </button>
+        {orderItems.length !== 0 && (
+          <div className="w-full h-full p-5 flex flex-col items-center justify-center space-y-3">
+            {orderItems.map((item, idx) => (
+              <CartItem key={idx} item={item} />
+            ))}
+            <div className="w-full flex flex-row items-center justify-between">
+              <span className="w-full text-center text-lg font-bold">
+                Grand Total: Rs.{total}
+              </span>
+              <button
+                type="button"
+                className="w-full px-5 py-3 text-white font-semibold rounded-lg bg-red-600 flex flex-row items-center justify-center space-x-3"
+              >
+                <span>Checkout</span>
+              </button>
+            </div>
           </div>
-        </div>
+        )}
       </div>
     );
   }
