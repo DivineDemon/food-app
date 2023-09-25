@@ -15,11 +15,11 @@ const CartItem = ({ item }) => {
   };
 
   const handleIncrement = () => {
-    dispatch(increment(item.ID));
+    dispatch(increment(item));
   };
 
   const handleDecrement = () => {
-    dispatch(decrement(item.ID));
+    dispatch(decrement(item));
   };
 
   return (

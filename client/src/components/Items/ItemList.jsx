@@ -20,7 +20,7 @@ const ItemList = () => {
 
   if (loading) {
     return (
-      <div className="w-full flex items-center justify-center">
+      <div className="w-full flex items-center justify-center p-5">
         <Loading />
       </div>
     );
@@ -28,7 +28,7 @@ const ItemList = () => {
 
   if (error) {
     return (
-      <div className="w-full flex items-center justify-center">
+      <div className="w-full flex items-center justify-center p-5">
         <NotFound message={message} />
       </div>
     );

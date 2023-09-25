@@ -13,7 +13,7 @@ const ItemBox = ({ item }) => {
   };
 
   return (
-    <div className="w-[350px] rounded-lg border border-yellow-500 flex flex-col items-center justify-center">
+    <div className="w-[350px] h-[500px] rounded-lg border border-yellow-500 flex flex-col items-center justify-center">
       <img
         src={item.image}
         alt="item"

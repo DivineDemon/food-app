@@ -45,7 +45,7 @@ const CartList = () => {
           </div>
         ) : (
           <div className="fixed top-4 right-0 z-50 w-[25%] h-[95%] shadow-xl backdrop-blur-sm bg-black/30 rounded-lg m-2 flex flex-col items-center justify-center delay-150 ease-in-out text-white overflow-y-scroll">
-            <p className="text-4xl font-bold">Bhook Ni Lagi Kya ? 🥺</p>
+            <p className="text-lg font-bold">Bhook Ni Lagi Kya ? 🥺</p>
             <AiOutlineClose
               className="w-8 h-8 cursor-pointer absolute top-3 right-3"
               onClick={handleClose}

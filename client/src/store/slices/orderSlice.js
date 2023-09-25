@@ -28,20 +28,36 @@ const orderSlice = createSlice({
       state.isActive = !state.isActive;
     },
     deleteItem: (state, action) => {
+      let removedItem = state.orderItems.filter(
+        (item) => item.ID === action.payload.ID
+      );
+
+      removedItem = removedItem[0];
+      let cutPrice = removedItem.price * removedItem.quantity;
+      state.total -= cutPrice;
+      
       let filteredOrder = state.orderItems.filter(
         (item) => item.ID !== action.payload.ID
       );
+
       state.orderItems = filteredOrder;
-      state.total -= action.payload.price;
       state.quantity = filteredOrder.length;
     },
     increment: (state, action) => {
-      let finalItems = incrementItemQuantity(state.orderItems, action.payload);
+      let finalItems = incrementItemQuantity(
+        state.orderItems,
+        action.payload.ID
+      );
       state.orderItems = finalItems;
+      state.total += action.payload.price;
     },
     decrement: (state, action) => {
-      let finalItems = decrementItemQuantity(state.orderItems, action.payload);
+      let finalItems = decrementItemQuantity(
+        state.orderItems,
+        action.payload.ID
+      );
       state.orderItems = finalItems;
+      state.total -= action.payload.price;
     },
   },
 });
