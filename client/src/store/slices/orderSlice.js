@@ -16,10 +16,27 @@ const orderSlice = createSlice({
   initialState,
   reducers: {
     setOrder: (state, action) => {
+      let foundItem = 0;
       let item = action.payload;
-      state.orderItems.push(item);
-      state.quantity += 1;
-      state.total += item.price;
+
+      if (state.orderItems.length !== 0) {
+        foundItem = state.orderItems.findIndex(
+          (orderItem) => orderItem.ID === item.ID
+        );
+        if (foundItem === -1) {
+          state.orderItems.push(item);
+          state.quantity += 1;
+          state.total += item.price;
+        } else {
+          let finalItems = incrementItemQuantity(state.orderItems, item.ID);
+          state.orderItems = finalItems;
+          state.total += item.price;
+        }
+      } else {
+        state.orderItems.push(item);
+        state.quantity += 1;
+        state.total += item.price;
+      }
     },
     getOrder: (state) => {
       return state.orderItems;
