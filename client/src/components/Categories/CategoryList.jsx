@@ -4,13 +4,17 @@ import { useDispatch, useSelector } from "react-redux";
 import Loading from "../Loading";
 import NotFound from "../NotFound";
 import CategoryItem from "./CategoryItem";
-import { fetchCategories } from "../../store/api";
+import { fetchCategories, fetchItems } from "../../store/api";
 
 const CategoryList = () => {
   const dispatch = useDispatch();
   const { loading, error, categories, message } = useSelector(
     (state) => state.category
   );
+
+  const handleAll = () => {
+    dispatch(fetchItems());
+  };
 
   useEffect(() => {
     dispatch(fetchCategories());
@@ -33,9 +37,16 @@ const CategoryList = () => {
     );
   }
 
+  const all = {
+    ID: 0,
+    name: "All",
+    creator_id: 1,
+  };
+
   if (categories.length !== 0) {
     return (
       <div className="p-5 flex flex-row items-center justify-center space-x-5">
+        <CategoryItem category={all} onClick={handleAll} />
         {categories.map((category) => (
           <CategoryItem key={category.ID} category={category} />
         ))}
