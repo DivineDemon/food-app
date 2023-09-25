@@ -1,13 +1,25 @@
 import { useDispatch } from "react-redux";
 import { AiOutlineClose } from "react-icons/ai";
 import { BiMinus, BiPlus } from "react-icons/bi";
-import { deleteItem } from "../../store/slices/orderSlice";
+import {
+  decrement,
+  increment,
+  deleteItem,
+} from "../../store/slices/orderSlice";
 
 const CartItem = ({ item }) => {
   const dispatch = useDispatch();
 
   const handleRemove = () => {
     dispatch(deleteItem(item));
+  };
+
+  const handleIncrement = () => {
+    dispatch(increment(item.ID));
+  };
+
+  const handleDecrement = () => {
+    dispatch(decrement(item.ID));
   };
 
   return (
@@ -28,11 +40,19 @@ const CartItem = ({ item }) => {
         </div>
         {/* Quantity Control */}
         <div className="w-full h-[35%] flex flex-row items-center justify-center rounded-lg text-md">
-          <div className="w-full h-full flex items-center justify-center bg-black text-white rounded-l-lg">
+          <div
+            onClick={handleDecrement}
+            className="w-full h-full flex items-center justify-center bg-black text-white rounded-l-lg cursor-pointer"
+          >
             <BiMinus />
           </div>
-          <div className="w-full h-full font-semibold p-1 text-center">{item.quantity}</div>
-          <div className="w-full h-full flex items-center justify-center bg-black text-white rounded-r-lg">
+          <div className="w-full h-full font-semibold p-1 text-center">
+            {item.quantity}
+          </div>
+          <div
+            onClick={handleIncrement}
+            className="w-full h-full flex items-center justify-center bg-black text-white rounded-r-lg cursor-pointer"
+          >
             <BiPlus />
           </div>
         </div>

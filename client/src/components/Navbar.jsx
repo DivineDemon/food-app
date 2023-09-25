@@ -46,7 +46,10 @@ const Navbar = () => {
               )}
             </div>
           ) : (
-            <div className="relative">
+            <div
+              onClick={() => setActive((prev) => !prev)}
+              className="cursor-pointer"
+            >
               <FaUserCircle className="w-8 h-8" />
               {active && <Dropdown options={["Login"]} />}
             </div>
