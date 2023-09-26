@@ -57,29 +57,34 @@ const login = async (req, res) => {
       });
     }
 
-    if (bcrypt.compareSync(password, user.password)) {
-      // Generate JWT Token
-      const userToken = jwt.sign(
-        {
-          id: user.ID,
-          email: user.email,
-          type: user.type,
-        },
-        process.env.JWT_SECRET,
-        {
-          expiresIn: "30d",
-        }
-      );
-
-      // Send User Data
-      sendResponse(res, 200, {
-        user,
-        token: userToken,
-      });
+    if (user === null) {
+      sendResponse(res, 404);
     } else {
-      sendResponse(res, 401);
+      if (bcrypt.compareSync(password, user.password)) {
+        // Generate JWT Token
+        const userToken = jwt.sign(
+          {
+            id: user.ID,
+            email: user.email,
+            type: user.type,
+          },
+          process.env.JWT_SECRET,
+          {
+            expiresIn: "30d",
+          }
+        );
+
+        // Send User Data
+        sendResponse(res, 200, {
+          user,
+          token: userToken,
+        });
+      } else {
+        sendResponse(res, 401);
+      }
     }
   } catch (error) {
+    console.log(error);
     sendResponse(res, 500, error);
   }
 };
