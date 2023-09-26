@@ -29,7 +29,7 @@ const CartItem = ({ item }) => {
         onClick={handleRemove}
       />
       {/* Image */}
-      <img src={item.image} alt="item" className="w-24 h-24 rounded-lg" />
+      <img src={item.image} alt="item" className="w-24 h-24 rounded-full" />
       {/* Text */}
       <div className="w-full h-full flex flex-col items-start justify-center space-y-3">
         <div className="w-full h-[35%] flex flex-row items-center justify-between">
