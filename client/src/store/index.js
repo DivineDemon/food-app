@@ -12,10 +12,6 @@ import {
   persistReducer,
 } from "redux-persist";
 
-export const store = configureStore({
-  reducer: rootReducer,
-});
-
 const persistConfig = {
   key: "root",
   storage,
@@ -23,7 +19,7 @@ const persistConfig = {
   blacklist: ["item", "category", "order"],
 };
 
-export const persistedStore = configureStore({
+export const store = configureStore({
   reducer: persistReducer(persistConfig, rootReducer),
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
@@ -33,4 +29,4 @@ export const persistedStore = configureStore({
     }),
 });
 
-export const persistor = persistStore(persistedStore);
+export const persistor = persistStore(store);
