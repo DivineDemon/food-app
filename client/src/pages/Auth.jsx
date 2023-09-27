@@ -1,7 +1,7 @@
-import { useJwt } from "react-jwt";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaTelegramPlane } from "react-icons/fa";
+import toast, { Toaster } from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 
 import Loading from "../components/Loading";
@@ -13,6 +13,7 @@ const Auth = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  const [toggle, setToggle] = useState(false); // False: Register | True: Login
   const [formData, setFormData] = useState({
     username: "",
     email: "",
@@ -20,10 +21,8 @@ const Auth = () => {
     image: "",
     phone: "",
   });
-  const [toggle, setToggle] = useState(false); // False: Register | True: Login
 
-  const { loading, token, error, message } = useSelector((state) => state.user);
-  const { isExpired } = useJwt(token);
+  const { loading, error, message, user } = useSelector((state) => state.user);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -46,20 +45,22 @@ const Auth = () => {
       }
     } else {
       dispatch(register(formData));
-      if (loading === false && error === false) {
-        setToggle(true);
-      }
+    }
+
+    if (error) {
+      toast.error(message);
+    } else {
+      toast.success("Redirecting!");
     }
   };
 
   useEffect(() => {
-    if (token) {
-      if (!isExpired) {
-        navigate("/");
-      }
+    if (Object.keys(user).length !== 0) {
+      toast.success("User Logged in Successfully!");
+      navigate("/");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [token, isExpired]);
+  }, [user]);
 
   if (loading) {
     return (
@@ -69,8 +70,13 @@ const Auth = () => {
     );
   }
 
+  if (error) {
+    toast(message);
+  }
+
   return (
     <div className="w-screen h-screen flex items-center justify-center">
+      <Toaster />
       <form
         onSubmit={handleSubmit}
         className="w-[80%] md:w-[65%] lg:w-[35%] xl:w[35%] rounded-lg bg-gray-300 flex flex-col items-start justify-start p-5"
@@ -104,25 +110,13 @@ const Auth = () => {
               />
             </>
           ) : (
-            <>
-              {error && (
-                <div className="w-full rounded-lg bg-red-200 text-red-500 px-5 py-3 font-semibold text-center">
-                  <span>{message}</span>
-                </div>
-              )}
-              {isExpired && (
-                <div className="w-full rounded-lg bg-red-200 text-red-500 px-5 py-3 font-semibold text-center">
-                  <span>Session Expired! Please Login Again!</span>
-                </div>
-              )}
-              <FormGroup
-                label="Username or Email"
-                type="text"
-                placeholder="Enter Username or Email"
-                formData={formData}
-                setFormData={setFormData}
-              />
-            </>
+            <FormGroup
+              label="Username or Email"
+              type="text"
+              placeholder="Enter Username or Email"
+              formData={formData}
+              setFormData={setFormData}
+            />
           )}
           <FormGroup
             label="Password"

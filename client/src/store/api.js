@@ -30,8 +30,12 @@ export const login = createAsyncThunk("login", async (userData) => {
     body: JSON.stringify(userData),
   });
 
-  response = await response.json();
+  if (response.status === 404) {
+    response = await response.json();
+    throw new Error(response.message);
+  }
 
+  response = await response.json();
   if (response.data === undefined) {
     return response;
   } else {
