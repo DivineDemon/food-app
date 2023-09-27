@@ -32,10 +32,6 @@ export const login = createAsyncThunk("login", async (userData) => {
 
   response = await response.json();
 
-  if (!response.ok) {
-    throw new Error(response.message);
-  }
-
   if (response.data === undefined) {
     return response;
   } else {

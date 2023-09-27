@@ -19,8 +19,8 @@ export const store = configureStore({
 const persistConfig = {
   key: "root",
   storage,
-  whitelist: ["userReducer"],
-  blacklist: ["itemReducer", "categoryReducer", "orderReducer"],
+  whitelist: ["user"],
+  blacklist: ["item", "category", "order"],
 };
 
 export const persistedStore = configureStore({
