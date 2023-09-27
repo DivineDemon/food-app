@@ -13,7 +13,12 @@ export const register = createAsyncThunk("register", async (userData) => {
   );
 
   response = await response.json();
-  return response.data;
+
+  if (response.data === undefined) {
+    return response;
+  } else {
+    return response.data;
+  }
 });
 
 export const login = createAsyncThunk("login", async (userData) => {
@@ -26,7 +31,16 @@ export const login = createAsyncThunk("login", async (userData) => {
   });
 
   response = await response.json();
-  return response.data;
+
+  if (!response.ok) {
+    throw new Error(response.message);
+  }
+
+  if (response.data === undefined) {
+    return response;
+  } else {
+    return response.data;
+  }
 });
 
 export const fetchItems = createAsyncThunk("items", async () => {

@@ -6,6 +6,7 @@ const initialState = {
   error: false,
   user: {},
   token: "",
+  message: "",
 };
 
 const userSlice = createSlice({
@@ -22,7 +23,8 @@ const userSlice = createSlice({
       })
       .addCase(register.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message;
+        state.error = action.error.success;
+        state.message = action.error.message;
       })
       .addCase(login.pending, (state) => {
         state.loading = true;
@@ -35,7 +37,8 @@ const userSlice = createSlice({
       })
       .addCase(login.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message;
+        state.error = true;
+        state.message = action.error.message;
       });
   },
 });

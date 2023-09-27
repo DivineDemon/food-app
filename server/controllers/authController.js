@@ -84,7 +84,6 @@ const login = async (req, res) => {
       }
     }
   } catch (error) {
-    console.log(error);
     sendResponse(res, 500, error);
   }
 };
