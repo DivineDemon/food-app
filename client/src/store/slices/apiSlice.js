@@ -1,0 +1,44 @@
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+
+const api = createApi({
+  baseQuery: fetchBaseQuery({ baseUrl: process.env.REACT_APP_BASE_URL }),
+  endpoints: (builder) => ({
+    register: builder.mutation({
+      query: (userData) => ({
+        url: "/auth/register",
+        method: "POST",
+        body: userData,
+      }),
+    }),
+    login: builder.mutation({
+      query: (userData) => ({
+        url: "/auth/login",
+        method: "POST",
+        body: userData,
+      }),
+    }),
+    fetchItems: builder.query({
+      query: () => "/item/all",
+    }),
+    fetchCategories: builder.query({
+      query: () => "/category/all",
+    }),
+    fetchCategoryItems: builder.query({
+      query: (id) => `/item/category?category_id=${id}`,
+    }),
+    fetchSearchItems: builder.query({
+      query: (key) => `/item/search?key=${key}`,
+    }),
+  }),
+});
+
+export const {
+  useRegisterMutation,
+  useLoginMutation,
+  useFetchItemsQuery,
+  useFetchCategoriesQuery,
+  useFetchCategoryItemsQuery,
+  useFetchSearchItemsQuery,
+} = api;
+
+export default api;

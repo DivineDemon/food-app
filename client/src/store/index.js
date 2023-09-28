@@ -11,12 +11,13 @@ import {
   persistStore,
   persistReducer,
 } from "redux-persist";
+import apiReducer from "./slices/apiSlice";
 
 const persistConfig = {
   key: "root",
   storage,
   whitelist: ["user"],
-  blacklist: ["item", "category", "order"],
+  blacklist: ["api", "item", "category", "order"],
 };
 
 export const store = configureStore({
@@ -26,7 +27,7 @@ export const store = configureStore({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
-    }),
+    }).concat(apiReducer.middleware),
 });
 
 export const persistor = persistStore(store);

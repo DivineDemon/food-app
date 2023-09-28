@@ -1,84 +1,60 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaTelegramPlane } from "react-icons/fa";
 import toast, { Toaster } from "react-hot-toast";
-import { useDispatch, useSelector } from "react-redux";
 
 import Loading from "../components/Loading";
-import { register, login } from "../store/api";
 import FormGroup from "../components/FormGroup";
 import ImageUpload from "../components/ImageUpload";
+import {
+  useLoginMutation,
+  useRegisterMutation,
+} from "../store/slices/apiSlice";
 
 const Auth = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const [loginMutation] = useLoginMutation();
+  const [registerMutation] = useRegisterMutation();
 
   const [toggle, setToggle] = useState(false); // False: Register | True: Login
   const [formData, setFormData] = useState({
-    username: "",
     email: "",
-    password: "",
     image: "",
     phone: "",
+    username: "",
+    password: "",
   });
 
-  const { loading, error, message, user } = useSelector((state) => state.user);
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    if (toggle) {
-      if (formData.email !== "") {
-        dispatch(
-          login({
-            email: formData.email,
-            password: formData.password,
-          })
-        );
+  const handleSubmit = async () => {
+    try {
+      if (toggle) {
+        const [data, result] = loginMutation();
+        console.log("Login: ", data, result);
       } else {
-        dispatch(
-          login({
-            username: formData.username,
-            password: formData.password,
-          })
-        );
+        const [data, result] = registerMutation();
+        console.log("Register: ", data, result);
       }
-    } else {
-      dispatch(register(formData));
-    }
-
-    if (error) {
-      toast.error(message);
-    } else {
-      toast.success("Redirecting!");
+      navigate("/");
+    } catch (error) {
+      console.log(error);
+      toast.error(error.message || "An error occurred.");
     }
   };
 
-  useEffect(() => {
-    if (Object.keys(user).length !== 0) {
-      toast.success("User Logged in Successfully!");
-      navigate("/");
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user]);
-
-  if (loading) {
-    return (
-      <div className="w-screen h-screen flex items-center justify-center">
-        <Loading />
-      </div>
-    );
-  }
-
-  if (error) {
-    toast(message);
+  if (toggle) {
+    registerMutation.isLoading && <Loading />;
+  } else {
+    loginMutation.isLoading && <Loading />;
   }
 
   return (
     <div className="w-screen h-screen flex items-center justify-center">
       <Toaster />
       <form
-        onSubmit={handleSubmit}
+        onSubmit={(e) => {
+          e.preventDefault();
+          handleSubmit();
+        }}
         className="w-[80%] md:w-[65%] lg:w-[35%] xl:w[35%] rounded-lg bg-gray-300 flex flex-col items-start justify-start p-5"
       >
         <h1 className="w-full text-center text-3xl font-bold mb-3">

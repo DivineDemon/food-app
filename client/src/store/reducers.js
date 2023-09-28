@@ -1,5 +1,6 @@
 import { combineReducers } from "@reduxjs/toolkit";
 
+import apiReducer from "./slices/apiSlice";
 import itemReducer from "./slices/itemSlice";
 import userReducer from "./slices/userSlice";
 import orderReducer from "./slices/orderSlice";
@@ -10,6 +11,7 @@ const rootReducer = combineReducers({
   user: userReducer,
   order: orderReducer,
   category: categoryReducer,
+  [apiReducer.reducerPath]: apiReducer.reducer,
 });
 
 export default rootReducer;
