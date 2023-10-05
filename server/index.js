@@ -24,6 +24,7 @@ app.use(express.urlencoded({ limit: "200mb", extended: true }));
 app.use("/api/auth", require("./routes/authRoutes"));
 app.use("/api/item", require("./routes/itemRoutes"));
 app.use("/api/user", require("./routes/userRoutes"));
+app.use("/api/order", require("./routes/orderRoutes"));
 app.use("/api/category", require("./routes/categoryRoutes"));
 
 // Start Server

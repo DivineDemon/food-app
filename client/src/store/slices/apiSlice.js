@@ -24,6 +24,13 @@ const api = createApi({
         body: data.formData,
       }),
     }),
+    saveOrder: builder.mutation({
+      query: (data) => ({
+        url: "/order",
+        method: "POST",
+        body: data,
+      }),
+    }),
     fetchItems: builder.query({
       query: () => "/item/all",
     }),
@@ -47,6 +54,7 @@ export const {
   useFetchCategoriesQuery,
   useFetchCategoryItemsQuery,
   useFetchSearchItemsQuery,
+  useSaveOrderMutation,
 } = api;
 
 export default api;

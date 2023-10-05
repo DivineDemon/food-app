@@ -3,13 +3,24 @@ import { useDispatch, useSelector } from "react-redux";
 
 import CartItem from "./CartItem";
 import { toggleDrawer } from "../../store/slices/orderSlice";
+import { useSaveOrderMutation } from "../../store/slices/apiSlice";
 
 const CartList = () => {
   const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.user);
+  const [saveOrder, { isLoading }] = useSaveOrderMutation();
   const { orderItems, total, isActive } = useSelector((state) => state.order);
 
   const handleClose = () => {
     dispatch(toggleDrawer());
+  };
+
+  const handleOrder = async () => {
+    await saveOrder({
+      user_id: user.ID,
+      total,
+      order_items: orderItems,
+    });
   };
 
   if (isActive) {
@@ -35,8 +46,8 @@ const CartList = () => {
                   </span>
                   <button
                     type="button"
-                    className="w-full px-5 py-3 text-white font-semibold rounded-lg bg-red-600 flex flex-row items-center justify-center space-x-3"
-                  >
+                    onClick={handleOrder}
+                    className="w-full px-5 py-3 text-white font-semibold rounded-lg bg-red-600 flex flex-row items-center justify-center space-x-3">
                     <span>Checkout</span>
                   </button>
                 </div>
