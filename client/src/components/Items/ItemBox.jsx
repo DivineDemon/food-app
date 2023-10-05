@@ -1,18 +1,25 @@
-import { useDispatch } from "react-redux";
+import { toast, Toaster } from "react-hot-toast";
+import { useDispatch, useSelector } from "react-redux";
 import { setOrder } from "../../store/slices/orderSlice";
 
 const ItemBox = ({ item }) => {
   const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.user);
 
   const handleOrder = () => {
-    let tempItem = {};
-    Object.assign(tempItem, item);
-    tempItem.quantity = 1;
-    dispatch(setOrder(tempItem));
+    if (Object.keys(user).length === 0) {
+      toast.error("Please Login to Place and Order!");
+    } else {
+      let tempItem = {};
+      Object.assign(tempItem, item);
+      tempItem.quantity = 1;
+      dispatch(setOrder(tempItem));
+    }
   };
 
   return (
     <div className="w-[350px] h-[500px] rounded-lg border border-yellow-500 flex flex-col items-center justify-center">
+      <Toaster />
       <img
         src={item.image}
         alt="item"
@@ -30,8 +37,7 @@ const ItemBox = ({ item }) => {
         <button
           type="button"
           onClick={handleOrder}
-          className="w-full px-5 py-3 text-white font-semibold rounded-lg bg-red-600 flex flex-row items-center justify-center space-x-3"
-        >
+          className="w-full px-5 py-3 text-white font-semibold rounded-lg bg-red-600 flex flex-row items-center justify-center space-x-3">
           <span>Add to Cart</span>
         </button>
       </div>

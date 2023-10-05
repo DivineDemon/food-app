@@ -52,7 +52,7 @@ const orderSlice = createSlice({
       removedItem = removedItem[0];
       let cutPrice = removedItem.price * removedItem.quantity;
       state.total -= cutPrice;
-      
+
       let filteredOrder = state.orderItems.filter(
         (item) => item.ID !== action.payload.ID
       );
@@ -76,6 +76,11 @@ const orderSlice = createSlice({
       state.orderItems = finalItems;
       state.total -= action.payload.price;
     },
+    clearOrders: (state) => {
+      state.total = 0;
+      state.orderItems = [];
+      state.quantity = 0;
+    },
   },
 });
 
@@ -86,5 +91,6 @@ export const {
   deleteItem,
   increment,
   decrement,
+  clearOrders,
 } = orderSlice.actions;
 export default orderSlice.reducer;

@@ -1,9 +1,11 @@
 import { AiOutlineClose } from "react-icons/ai";
+import { toast, Toaster } from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 
+import Loading from "../Loading";
 import CartItem from "./CartItem";
-import { toggleDrawer } from "../../store/slices/orderSlice";
 import { useSaveOrderMutation } from "../../store/slices/apiSlice";
+import { toggleDrawer, clearOrders } from "../../store/slices/orderSlice";
 
 const CartList = () => {
   const dispatch = useDispatch();
@@ -16,16 +18,34 @@ const CartList = () => {
   };
 
   const handleOrder = async () => {
-    await saveOrder({
+    const response = await saveOrder({
       user_id: user.ID,
       total,
       order_items: orderItems,
     });
+
+    if (response.data.success) {
+      dispatch(clearOrders());
+      toast.success("Order Placed Successfully, Please Proceed to Payment!");
+    } else {
+      toast.error("Something went wrong! Please Try Again!");
+    }
   };
+
+  if (isLoading) {
+    return (
+      <div className="fixed top-4 right-0 z-50 w-[25%] h-[95%] shadow-xl backdrop-blur-sm bg-black/30 rounded-lg m-2 flex flex-col items-start justify-between delay-150 ease-in-out text-white overflow-y-scroll">
+        <div className="flex items-center justify-center w-full h-full">
+          <Loading />
+        </div>
+      </div>
+    );
+  }
 
   if (isActive) {
     return (
       <>
+        <Toaster />
         {orderItems.length !== 0 ? (
           <div className="fixed top-4 right-0 z-50 w-[25%] h-[95%] shadow-xl backdrop-blur-sm bg-black/30 rounded-lg m-2 flex flex-col items-start justify-between delay-150 ease-in-out text-white overflow-y-scroll">
             <div className="w-full p-5 flex flex-row items-center justify-between">
