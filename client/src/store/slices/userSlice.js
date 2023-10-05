@@ -13,9 +13,12 @@ const userSlice = createSlice({
   reducers: {
     setUser: (state, action) => {
       state.user = action.payload.user;
-      state.token = action.payload.token;
       state.loading = false;
       state.error = null;
+
+      if (action.payload.token) {
+        state.token = action.payload.token;
+      }
     },
     setError: (state, action) => {
       state.loading = false;

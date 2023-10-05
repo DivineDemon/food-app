@@ -17,6 +17,13 @@ const api = createApi({
         body: userData,
       }),
     }),
+    updateUser: builder.mutation({
+      query: (data) => ({
+        url: `/user?user_id=${data.id}`,
+        method: "PATCH",
+        body: data.formData,
+      }),
+    }),
     fetchItems: builder.query({
       query: () => "/item/all",
     }),
@@ -35,6 +42,7 @@ const api = createApi({
 export const {
   useRegisterMutation,
   useLoginMutation,
+  useUpdateUserMutation,
   useFetchItemsQuery,
   useFetchCategoriesQuery,
   useFetchCategoryItemsQuery,

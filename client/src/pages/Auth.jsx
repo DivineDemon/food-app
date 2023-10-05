@@ -1,10 +1,13 @@
-import { useState } from "react";
+import { useJwt } from "react-jwt";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaTelegramPlane } from "react-icons/fa";
 import toast, { Toaster } from "react-hot-toast";
+import { useDispatch, useSelector } from "react-redux";
 
 import Loading from "../components/Loading";
 import FormGroup from "../components/FormGroup";
+import { setUser } from "../store/slices/userSlice";
 import ImageUpload from "../components/ImageUpload";
 import {
   useLoginMutation,
@@ -12,9 +15,11 @@ import {
 } from "../store/slices/apiSlice";
 
 const Auth = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [loginMutation] = useLoginMutation();
-  const [registerMutation] = useRegisterMutation();
+  const { user, token } = useSelector((state) => state.user);
+  const [login, { isLoading: loginLoading }] = useLoginMutation();
+  const [register, { isLoading: registerLoading }] = useRegisterMutation();
 
   const [toggle, setToggle] = useState(false); // False: Register | True: Login
   const [formData, setFormData] = useState({
@@ -25,26 +30,51 @@ const Auth = () => {
     password: "",
   });
 
+  const { isExpired } = useJwt(token);
+
+  useEffect(() => {
+    if (Object.keys(user).length !== 0) {
+      if (!isExpired) {
+        navigate("/");
+      } else {
+        setToggle(true);
+        toast.error("Session Expired! Please Login Again.");
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const handleSubmit = async () => {
     try {
       if (toggle) {
-        const [data, result] = loginMutation();
-        console.log("Login: ", data, result);
+        const response = await login(formData);
+
+        if (response.error) {
+          toast.error(response.error.data.message);
+        } else {
+          dispatch(setUser(response.data.data));
+          toast.success("Logged In!");
+          navigate("/");
+        }
       } else {
-        const [data, result] = registerMutation();
-        console.log("Register: ", data, result);
+        const response = await register();
+
+        if (response.error) {
+          toast.error(response.error.data.message);
+        } else {
+          toast.success("Registered! Please Login Now to Continue!");
+          setToggle(true);
+        }
       }
-      navigate("/");
     } catch (error) {
-      console.log(error);
       toast.error(error.message || "An error occurred.");
     }
   };
 
-  if (toggle) {
-    registerMutation.isLoading && <Loading />;
-  } else {
-    loginMutation.isLoading && <Loading />;
+  if (loginLoading || registerLoading) {
+    <div className="w-screen h-screen flex items-center justify-center">
+      <Loading />
+    </div>;
   }
 
   return (
@@ -55,8 +85,7 @@ const Auth = () => {
           e.preventDefault();
           handleSubmit();
         }}
-        className="w-[80%] md:w-[65%] lg:w-[35%] xl:w[35%] rounded-lg bg-gray-300 flex flex-col items-start justify-start p-5"
-      >
+        className="w-[80%] md:w-[65%] lg:w-[35%] xl:w[35%] rounded-lg bg-gray-300 flex flex-col items-start justify-start p-5">
         <h1 className="w-full text-center text-3xl font-bold mb-3">
           {!toggle ? "Register" : "Login"}
         </h1>
@@ -108,16 +137,14 @@ const Auth = () => {
           />
           <span
             onClick={() => setToggle((prevState) => !prevState)}
-            className="w-full text-center text-sm text-blue-600 hover:underline cursor-pointer"
-          >
+            className="w-full text-center text-sm text-blue-600 hover:underline cursor-pointer">
             {!toggle
               ? "Already have an account? Login!"
               : "Don't have an account? Register!"}
           </span>
           <button
             type="submit"
-            className="w-full px-5 py-3 text-white font-semibold rounded-lg bg-black flex flex-row items-center justify-center space-x-3"
-          >
+            className="w-full px-5 py-3 text-white font-semibold rounded-lg bg-black flex flex-row items-center justify-center space-x-3">
             <span>Let's Go</span>
             <FaTelegramPlane />
           </button>
