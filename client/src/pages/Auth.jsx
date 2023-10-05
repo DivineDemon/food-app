@@ -57,7 +57,7 @@ const Auth = () => {
           navigate("/");
         }
       } else {
-        const response = await register();
+        const response = await register({ ...formData, type: "user" });
 
         if (response.error) {
           toast.error(response.error.data.message);

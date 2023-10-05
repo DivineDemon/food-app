@@ -1,7 +1,8 @@
 import { useState } from "react";
-import { FaTelegramPlane } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
+import { FaArrowLeft, FaTelegramPlane } from "react-icons/fa";
 
 import Loading from "../components/Loading";
 import FormGroup from "../components/FormGroup";
@@ -10,6 +11,7 @@ import { setUser } from "../store/slices/userSlice";
 import { useUpdateUserMutation } from "../store/slices/apiSlice";
 
 const Profile = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.user);
   const [update, { isLoading }] = useUpdateUserMutation();
@@ -63,8 +65,12 @@ const Profile = () => {
           handleSubmit();
         }}
         className="w-[80%] md:w-[65%] lg:w-[35%] xl:w[35%] rounded-lg bg-gray-300 flex flex-col items-start justify-start p-5 space-y-3">
-        <h1 className="w-full text-center text-3xl font-bold mb-3">
-          Edit Profile
+        <h1 className="w-full text-center text-3xl font-bold mb-3 grid grid-cols-12 items-center justify-center">
+          <FaArrowLeft
+            className="w-5 h-5 align-center col-span-1 cursor-pointer"
+            onClick={() => navigate("/")}
+          />
+          <span className="col-span-10 align-center">Edit Profile</span>
         </h1>
         <div className="w-full flex items-center justify-center">
           <ImageUpload

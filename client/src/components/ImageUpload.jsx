@@ -67,13 +67,15 @@ const ImageUpload = ({ toggle, formData, setFormData, image }) => {
                 <img
                   src={formData.image || ""}
                   alt="profile"
-                  className="w-32 h-32 rounded-full"
+                  className={
+                    formData.image ? "w-32 h-32 rounded-full" : "hidden"
+                  }
                 />
               ) : (
                 <img
                   src={image || ""}
                   alt="profile"
-                  className="w-32 h-32 rounded-full"
+                  className={image ? "w-32 h-32 rounded-full" : "hidden"}
                 />
               )}
             </div>
