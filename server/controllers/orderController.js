@@ -41,6 +41,36 @@ const addOrder = async (req, res) => {
   }
 };
 
+const getUserOrders = async (req, res) => {
+  try {
+    const userWithOrders = await prisma.user.findUnique({
+      where: {
+        ID: parseInt(req.query.user_id),
+      },
+      include: {
+        order: {
+          include: {
+            order_items: {
+              include: {
+                item: true,
+              },
+            },
+          },
+        },
+      },
+    });
+
+    if (!userWithOrders) {
+      sendResponse(res, 404);
+    }
+
+    sendResponse(res, 200, userWithOrders.order);
+  } catch (error) {
+    sendResponse(res, 500, error);
+  }
+};
+
 module.exports = {
   addOrder,
+  getUserOrders,
 };

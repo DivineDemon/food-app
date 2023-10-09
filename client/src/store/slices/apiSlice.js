@@ -31,6 +31,9 @@ const api = createApi({
         body: data,
       }),
     }),
+    getUserOrders: builder.query({
+      query: (id) => `/order/user?user_id=${id}`,
+    }),
     fetchItems: builder.query({
       query: () => "/item/all",
     }),
@@ -55,6 +58,7 @@ export const {
   useFetchCategoryItemsQuery,
   useFetchSearchItemsQuery,
   useSaveOrderMutation,
+  useGetUserOrdersQuery,
 } = api;
 
 export default api;

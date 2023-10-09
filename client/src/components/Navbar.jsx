@@ -1,15 +1,13 @@
-import { useState } from "react";
+import { FaShoppingCart } from "react-icons/fa";
 import { useSelector, useDispatch } from "react-redux";
-import { FaUserCircle, FaShoppingCart } from "react-icons/fa";
 
 import Search from "./Search";
-import Dropdown from "./Dropdown";
+import DropMenu from "./DropMenu";
 import Logo from "../assets/logo.jpg";
 import { toggleDrawer } from "../store/slices/orderSlice";
 
 const Navbar = () => {
   const dispatch = useDispatch();
-  const [active, setActive] = useState(false);
   const { user } = useSelector((state) => state.user);
   const { quantity } = useSelector((state) => state.order);
 
@@ -28,30 +26,19 @@ const Navbar = () => {
         </li>
         <li>
           {Object.keys(user).length !== 0 ? (
-            <div
-              onClick={() => setActive((prev) => !prev)}
-              className="relative flex flex-row items-center justify-center space-x-2 cursor-pointer"
-            >
-              <img
-                src={user.image}
-                alt="profile"
-                className="w-10 h-10 rounded-full border-2 border-gray-300"
+            <div className="relative flex flex-row items-center justify-center space-x-2 cursor-pointer">
+              <DropMenu
+                options={["Profile", "Recent Orders", "Logout"]}
+                image={user.image}
               />
               <div className="flex flex-col items-start justify-between text-sm text-gray-500 font-semibold">
                 <span>{user.username}</span>
                 <span>{user.email}</span>
               </div>
-              {active && (
-                <Dropdown options={["Profile", "Recent Orders", "Logout"]} />
-              )}
             </div>
           ) : (
-            <div
-              onClick={() => setActive((prev) => !prev)}
-              className="cursor-pointer"
-            >
-              <FaUserCircle className="w-8 h-8" />
-              {active && <Dropdown options={["Login"]} />}
+            <div className="cursor-pointer">
+              <DropMenu options={["Login"]} type="no-user" />
             </div>
           )}
         </li>

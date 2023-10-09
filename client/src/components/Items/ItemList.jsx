@@ -1,24 +1,12 @@
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-
 import Loading from "../Loading";
 import NotFound from "../NotFound";
 import ItemBox from "../Items/ItemBox";
-import { fetchItems } from "../../store/api";
+import { useFetchItemsQuery } from "../../store/slices/apiSlice";
 
 const ItemList = () => {
-  const dispatch = useDispatch();
-  const { loading, error, items, message } = useSelector((state) => state.item);
+  const { data: items, isLoading, isError } = useFetchItemsQuery();
 
-  useEffect(() => {
-
-    if (items.length === 0) {
-      dispatch(fetchItems());
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [items, loading]);
-
-  if (loading) {
+  if (isLoading) {
     return (
       <div className="w-full flex items-center justify-center p-5">
         <Loading />
@@ -26,18 +14,18 @@ const ItemList = () => {
     );
   }
 
-  if (error) {
+  if (isError) {
     return (
       <div className="w-full flex items-center justify-center p-5">
-        <NotFound message={message} />
+        <NotFound message="Items not Found!" />
       </div>
     );
   }
 
-  if (items.length !== 0) {
+  if (items.data.length !== 0) {
     return (
       <div className="p-5 flex flex-row items-center justify-center space-x-5">
-        {items.map((item) => (
+        {items.data.map((item) => (
           <ItemBox key={item.ID} item={item} />
         ))}
       </div>

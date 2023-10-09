@@ -1,27 +1,12 @@
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-
 import Loading from "../Loading";
 import NotFound from "../NotFound";
 import CategoryItem from "./CategoryItem";
-import { fetchCategories, fetchItems } from "../../store/api";
+import { useFetchCategoriesQuery } from "../../store/slices/apiSlice";
 
 const CategoryList = () => {
-  const dispatch = useDispatch();
-  const { loading, error, categories, message } = useSelector(
-    (state) => state.category
-  );
+  const { data: categories, isLoading, isError } = useFetchCategoriesQuery();
 
-  const handleAll = () => {
-    dispatch(fetchItems());
-  };
-
-  useEffect(() => {
-    dispatch(fetchCategories());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  if (loading) {
+  if (isLoading) {
     return (
       <div className="w-full flex items-center justify-center p-5">
         <Loading />
@@ -29,10 +14,10 @@ const CategoryList = () => {
     );
   }
 
-  if (error) {
+  if (isError) {
     return (
       <div className="w-full flex items-center justify-center p-5">
-        <NotFound message={message} />
+        <NotFound message="Categories not Found!" />
       </div>
     );
   }
@@ -43,11 +28,11 @@ const CategoryList = () => {
     creator_id: 1,
   };
 
-  if (categories.length !== 0) {
+  if (categories.data.length !== 0) {
     return (
       <div className="p-5 flex flex-row items-center justify-center space-x-5">
-        <CategoryItem category={all} onClick={handleAll} />
-        {categories.map((category) => (
+        <CategoryItem category={all} />
+        {categories.data.map((category) => (
           <CategoryItem key={category.ID} category={category} />
         ))}
       </div>

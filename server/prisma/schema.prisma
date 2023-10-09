@@ -3,8 +3,9 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
-  url      = env("DATABASE_URL")
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
 }
 
 model address {
@@ -44,6 +45,8 @@ model order {
   ID          Int           @id @default(autoincrement())
   user_id     Int
   total       Float?
+  created_at  DateTime      @default(now())
+  updated_at  DateTime      @updatedAt
   user        user          @relation(fields: [user_id], references: [ID], onDelete: Cascade, map: "user")
   order_items order_items[]
 
