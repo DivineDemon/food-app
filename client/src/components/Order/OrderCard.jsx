@@ -1,6 +1,5 @@
 import ItemCard from "./ItemCard";
 import DropMenu from "../DropMenu";
-import Logo from "../../assets/logo.jpg";
 import { useSelector } from "react-redux";
 
 const OrderCard = ({ order }) => {
@@ -12,14 +11,18 @@ const OrderCard = ({ order }) => {
       <div className="w-full flex flex-row items-center justify-between p-3 space-x-2 shadow-lg">
         <div className="flex-1 flex flex-row items-center justify-center space-x-2">
           {/* User Image */}
-          <img src={Logo} alt="profile" className="w-10 h-full rounded-full" />
+          <img
+            src={user.image}
+            alt="profile"
+            className="w-10 h-full rounded-full"
+          />
           {/* User Details */}
           <div className="w-full h-full flex flex-col items-start justify-around">
             <span className="text-sm font-semibold text-black">
               {user.username}
             </span>
             <span className="text-sm font-semibold text-black">
-              Order Placed on {order.created_at}
+              Order Placed on {new Date(order.created_at).toLocaleDateString()}
             </span>
           </div>
         </div>
@@ -30,6 +33,10 @@ const OrderCard = ({ order }) => {
         {order.order_items.map((item) => (
           <ItemCard key={item.item_id} item={item} />
         ))}
+        <div className="w-full flex flex-row items-center justify-between p-1">
+          <span className="text-sm font-bold text-black">Grand Total:</span>
+          <span className="text-sm font-bold text-black">{order.total}</span>
+        </div>
       </div>
     </div>
   );

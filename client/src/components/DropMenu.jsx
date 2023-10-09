@@ -58,7 +58,7 @@ const DropMenu = ({ options, image, type }) => {
               key={option}
               onClick={() => {
                 handleRedirect(option);
-                setIsOpen(false); // Close the dropdown after clicking an option
+                setIsOpen(false);
               }}>
               {option}
             </li>

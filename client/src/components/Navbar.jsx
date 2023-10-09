@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import { FaShoppingCart } from "react-icons/fa";
 import { useSelector, useDispatch } from "react-redux";
 
@@ -7,6 +8,7 @@ import Logo from "../assets/logo.jpg";
 import { toggleDrawer } from "../store/slices/orderSlice";
 
 const Navbar = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.user);
   const { quantity } = useSelector((state) => state.order);
@@ -15,10 +17,19 @@ const Navbar = () => {
     dispatch(toggleDrawer());
   };
 
+  const handleRedirect = () => {
+    navigate("/");
+  };
+
   return (
     <nav className="fixed top-0 z-40 bg-white w-screen px-10 py-3 flex flex-row items-center justify-between shadow-lg">
       {/* Logo */}
-      <img src={Logo} alt="logo" className="w-12 h-12 rounded-full" />
+      <img
+        src={Logo}
+        alt="logo"
+        className="w-12 h-12 rounded-full cursor-pointer"
+        onClick={handleRedirect}
+      />
       {/* Items */}
       <ul className="flex flex-row items-center justify-center space-x-10">
         <li>

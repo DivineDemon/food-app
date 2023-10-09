@@ -49,7 +49,7 @@ const Profile = () => {
   if (isLoading) {
     return (
       <div className="w-screen h-screen flex items-center justify-center">
-        <div className="w-[80%] md:w-[65%] lg:w-[35%] xl:w[35%] rounded-lg bg-gray-300 flex flex-col items-start justify-start p-5 space-y-3">
+        <div className="w-[80%] md:w-[65%] lg:w-[35%] xl:w[35%] rounded-lg bg-gray-300 flex flex-col items-center justify-center p-5 space-y-3">
           <Loading />
         </div>
       </div>

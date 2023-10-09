@@ -60,7 +60,9 @@ const ImageUpload = ({ toggle, formData, setFormData, image }) => {
             </button>
           </div>
           {loading ? (
-            <Loading />
+            <div className="w-full flex items-end justify-end">
+              <Loading />
+            </div>
           ) : (
             <div className="w-full flex items-end justify-end">
               {formData.image ? (
