@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
 import Loading from "../components/Loading";
 import { imageToBase64 } from "../utils/helpers";
@@ -15,7 +15,7 @@ const ImageUpload = ({ toggle, formData, setFormData, image }) => {
     const base64 = await imageToBase64(e.target.files[0]);
 
     const response = await fetch(
-      `${process.env.REACT_APP_BASE_URL}/user/upload`,
+      `${import.meta.env.VITE_BASE_URL}/user/upload`,
       {
         method: "POST",
         headers: {

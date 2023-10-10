@@ -145,7 +145,7 @@ const Auth = () => {
           <button
             type="submit"
             className="w-full px-5 py-3 text-white font-semibold rounded-lg bg-black flex flex-row items-center justify-center space-x-3">
-            <span>Let's Go</span>
+            <span>Let&apos;s Go</span>
             <FaTelegramPlane />
           </button>
         </div>
