@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 
 import Search from "./Search";
 import DropMenu from "./DropMenu";
-import Logo from "../assets/logo.jpg";
+import Logo from "../assets/logo.png";
 import { toggleDrawer } from "../store/slices/orderSlice";
 
 const Navbar = () => {
