@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import toast, { Toaster } from "react-hot-toast";
 
@@ -11,11 +10,9 @@ import CategoryList from "../components/Categories/CategoryList";
 const Home = () => {
   const { user } = useSelector((state) => state.user);
 
-  useEffect(() => {
-    if (Object.keys(user).length === 0) {
-      toast.error("Please Login to Place an Order!");
-    }
-  }, [user]);
+  if (Object.keys(user).length === 0) {
+    toast.error("Please Login to Place an Order!");
+  }
 
   return (
     <>
