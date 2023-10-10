@@ -1,5 +1,6 @@
 import { Provider } from "react-redux";
 import ReactDOM from "react-dom/client";
+import { NextUIProvider } from "@nextui-org/react";
 import { PersistGate } from "redux-persist/integration/react";
 
 import "./index.css";
@@ -11,7 +12,9 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <Provider store={store}>
     <PersistGate loading={<Loading />} persistor={persistor}>
-      <App />
+      <NextUIProvider>
+        <App />
+      </NextUIProvider>
     </PersistGate>
   </Provider>
 );

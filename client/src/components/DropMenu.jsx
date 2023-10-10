@@ -1,15 +1,20 @@
-import { useState } from "react";
+import {
+  Button,
+  Dropdown,
+  DropdownMenu,
+  DropdownItem,
+  DropdownTrigger,
+} from "@nextui-org/react";
 import { CgMenuRight } from "react-icons/cg";
 import { FaUserCircle } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
 const DropMenu = ({ options, image, type }) => {
   const navigate = useNavigate();
-  const [isOpen, setIsOpen] = useState(false);
 
   const handleRedirect = (option) => {
     switch (option) {
-      case "Login":
+      case "Login/Register":
         navigate("/auth");
         break;
       case "Profile":
@@ -27,45 +32,32 @@ const DropMenu = ({ options, image, type }) => {
     }
   };
 
-  const handleButtonClick = () => {
-    setIsOpen(!isOpen);
-  };
-
   return (
-    <div className="relative" onClick={handleButtonClick}>
-      <button>
-        {image !== undefined ? (
-          <img
-            src={image}
-            alt="dropdown"
-            className="w-10 h-10 rounded-full border-2 border-gray-300"
-          />
-        ) : null}
-        {type === "no-user" ? (
-          <FaUserCircle className="w-8 h-8" />
-        ) : type === "menu" ? (
-          <CgMenuRight className="w-5 h-5 text-black" />
-        ) : null}
-      </button>
-      <div
-        className={`absolute top-[35px] bg-yellow-600 text-black font-semibold rounded-lg p-2 ${
-          isOpen ? "block" : "hidden"
-        }`}>
-        <ul className="flex flex-col items-start justify-start space-y-3">
-          {options.map((option) => (
-            <li
-              className="p-2 cursor-pointer"
-              key={option}
-              onClick={() => {
-                handleRedirect(option);
-                setIsOpen(false);
-              }}>
-              {option}
-            </li>
-          ))}
-        </ul>
-      </div>
-    </div>
+    <Dropdown>
+      <DropdownTrigger>
+        <Button isIconOnly variant="ghost" className="rounded-full">
+          {image !== undefined ? (
+            <img
+              src={image}
+              alt="dropdown"
+              className="w-10 h-10 rounded-full object-cover"
+            />
+          ) : null}
+          {type === "no-user" ? (
+            <FaUserCircle className="w-8 h-8" />
+          ) : type === "menu" ? (
+            <CgMenuRight className="w-5 h-5 text-black" />
+          ) : null}
+        </Button>
+      </DropdownTrigger>
+      <DropdownMenu
+        aria-label="dropdown-options"
+        onAction={(key) => handleRedirect(key)}>
+        {options.map((option) => (
+          <DropdownItem key={option}>{option}</DropdownItem>
+        ))}
+      </DropdownMenu>
+    </Dropdown>
   );
 };
 

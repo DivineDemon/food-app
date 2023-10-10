@@ -49,7 +49,7 @@ const Navbar = () => {
             </div>
           ) : (
             <div className="cursor-pointer">
-              <DropMenu options={["Login"]} type="no-user" />
+              <DropMenu options={["Login/Register"]} type="no-user" />
             </div>
           )}
         </li>
