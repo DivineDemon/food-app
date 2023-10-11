@@ -17,7 +17,7 @@ const RecentOrders = () => {
     );
   }
 
-  if (isError || orders.data.length === 0) {
+  if (isError || orders.length === 0) {
     return (
       <div className="w-screen h-screen p-10 flex items-center justify-center">
         <NotFound message="No Orders Found!" />
@@ -25,11 +25,11 @@ const RecentOrders = () => {
     );
   }
 
-  if (orders.data.length !== 0) {
+  if (orders.length !== 0) {
     return (
       <div className="w-screen h-screen p-10 grid grid-cols-4 gap-5 items-center justify-center">
         {/* Card */}
-        {orders.data.map((order) => (
+        {orders.map((order) => (
           <OrderCard key={order.ID} order={order} />
         ))}
       </div>

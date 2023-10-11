@@ -33,12 +33,15 @@ const api = createApi({
     }),
     getUserOrders: builder.query({
       query: (id) => `/order/user?user_id=${id}`,
+      transformResponse: (response) => response.data,
     }),
     fetchItems: builder.query({
       query: () => "/item/all",
+      transformResponse: (response) => response.data,
     }),
     fetchCategories: builder.query({
       query: () => "/category/all",
+      transformResponse: (response) => response.data,
     }),
     fetchCategoryItems: builder.query({
       query: (id) => `/item/category?category_id=${id}`,

@@ -28,11 +28,11 @@ const CategoryList = () => {
     creator_id: 1,
   };
 
-  if (categories.data.length !== 0) {
+  if (categories.length !== 0) {
     return (
       <div className="p-5 flex flex-row items-center justify-center space-x-5">
         <CategoryItem category={all} />
-        {categories.data.map((category) => (
+        {categories.map((category) => (
           <CategoryItem key={category.ID} category={category} />
         ))}
       </div>

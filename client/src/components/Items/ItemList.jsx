@@ -22,10 +22,10 @@ const ItemList = () => {
     );
   }
 
-  if (items.data.length !== 0) {
+  if (items.length !== 0) {
     return (
       <div className="p-5 flex flex-row items-center justify-center space-x-5">
-        {items.data.map((item) => (
+        {items.map((item) => (
           <ItemBox key={item.ID} item={item} />
         ))}
       </div>
