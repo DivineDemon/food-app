@@ -1,10 +1,18 @@
 import Loading from "../Loading";
 import NotFound from "../NotFound";
 import CategoryItem from "./CategoryItem";
-import { useFetchCategoriesQuery } from "../../store/slices/apiSlice";
+import {
+  useFetchCategoriesQuery,
+  useFetchCategoryItemsMutation,
+} from "../../store/slices/apiSlice";
 
 const CategoryList = () => {
+  const [data] = useFetchCategoryItemsMutation();
   const { data: categories, isLoading, isError } = useFetchCategoriesQuery();
+
+  const filterItems = async (id) => {
+    await data(id);
+  };
 
   if (isLoading) {
     return (
@@ -31,9 +39,16 @@ const CategoryList = () => {
   if (categories.length !== 0) {
     return (
       <div className="p-5 flex flex-row items-center justify-center space-x-5">
-        <CategoryItem category={all} />
+        <button onClick={() => filterItems(all.ID)}>
+          <CategoryItem category={all} />
+        </button>
         {categories.map((category) => (
-          <CategoryItem key={category.ID} category={category} />
+          <button
+            type="button"
+            key={category.ID}
+            onClick={() => filterItems(category.ID)}>
+            <CategoryItem category={category} />
+          </button>
         ))}
       </div>
     );

@@ -1,52 +1,76 @@
+import { setLoading, setItems, setError } from "./itemSlice";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 const api = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: import.meta.env.VITE_BASE_URL }),
-  endpoints: (builder) => ({
-    register: builder.mutation({
+  endpoints: (build) => ({
+    register: build.mutation({
       query: (userData) => ({
         url: "/auth/register",
         method: "POST",
         body: userData,
       }),
     }),
-    login: builder.mutation({
+    login: build.mutation({
       query: (userData) => ({
         url: "/auth/login",
         method: "POST",
         body: userData,
       }),
     }),
-    updateUser: builder.mutation({
+    updateUser: build.mutation({
       query: (data) => ({
         url: `/user?user_id=${data.id}`,
         method: "PATCH",
         body: data.formData,
       }),
     }),
-    saveOrder: builder.mutation({
+    saveOrder: build.mutation({
       query: (data) => ({
         url: "/order",
         method: "POST",
         body: data,
       }),
     }),
-    getUserOrders: builder.query({
+    getUserOrders: build.query({
       query: (id) => `/order/user?user_id=${id}`,
       transformResponse: (response) => response.data,
     }),
-    fetchItems: builder.query({
+    fetchItems: build.query({
       query: () => "/item/all",
       transformResponse: (response) => response.data,
+      async onQueryStarted(_, { dispatch, queryFulfilled }) {
+        dispatch(setLoading(true));
+        try {
+          const { data } = await queryFulfilled;
+          dispatch(setItems(data));
+          dispatch(setLoading(false));
+        } catch (error) {
+          setError(error);
+        }
+      },
     }),
-    fetchCategories: builder.query({
+    fetchCategories: build.query({
       query: () => "/category/all",
       transformResponse: (response) => response.data,
     }),
-    fetchCategoryItems: builder.query({
-      query: (id) => `/item/category?category_id=${id}`,
+    fetchCategoryItems: build.mutation({
+      query: (id) =>
+        id === 0 ? "item/all" : `/item/category?category_id=${id}`,
+      transformResponse: (response) => response.data,
+      async onQueryStarted(_, { dispatch, queryFulfilled }) {
+        dispatch(setLoading(true));
+        try {
+          const { data } = await queryFulfilled;
+          console.log(data);
+          dispatch(setItems(data));
+          dispatch(setLoading(false));
+        } catch (error) {
+          setError(error.error.data);
+        }
+      },
     }),
-    fetchSearchItems: builder.query({
+    fetchSearchItems: build.query({
       query: (key) => `/item/search?key=${key}`,
     }),
   }),
@@ -58,7 +82,7 @@ export const {
   useUpdateUserMutation,
   useFetchItemsQuery,
   useFetchCategoriesQuery,
-  useFetchCategoryItemsQuery,
+  useFetchCategoryItemsMutation,
   useFetchSearchItemsQuery,
   useSaveOrderMutation,
   useGetUserOrdersQuery,

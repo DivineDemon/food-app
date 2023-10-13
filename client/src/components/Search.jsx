@@ -1,10 +1,10 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+// import { useDispatch } from "react-redux";
 import { AiOutlineSearch } from "react-icons/ai";
-import { fetchSearchItems } from "../store/api";
+// import { fetchSearchItems } from "../store/api";
 
 const Search = () => {
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const [key, setKey] = useState(null);
   const [active, setActive] = useState(false);
 
@@ -16,7 +16,8 @@ const Search = () => {
     e.preventDefault();
     setActive(false);
 
-    dispatch(fetchSearchItems(key));
+    console.log(key);
+    // dispatch(fetchSearchItems(key));
   };
 
   return (
@@ -26,8 +27,7 @@ const Search = () => {
           active
             ? "flex flex-row items-center justify-center space-x-3 border border-black rounded-lg delay-150 ease-in"
             : "flex flex-row items-center justify-center space-x-3"
-        }
-      >
+        }>
         <button type="submit">
           <AiOutlineSearch
             onMouseEnter={() => setActive(true)}
