@@ -1,23 +1,20 @@
 import { useState } from "react";
-// import { useDispatch } from "react-redux";
 import { AiOutlineSearch } from "react-icons/ai";
-// import { fetchSearchItems } from "../store/api";
+import { useFetchSearchItemsMutation } from "../store/slices/apiSlice";
 
 const Search = () => {
-  // const dispatch = useDispatch();
   const [key, setKey] = useState(null);
   const [active, setActive] = useState(false);
+  const [data] = useFetchSearchItemsMutation();
 
   const handleChange = (e) => {
     setKey(e.target.value);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setActive(false);
-
-    console.log(key);
-    // dispatch(fetchSearchItems(key));
+    await data(key);
   };
 
   return (

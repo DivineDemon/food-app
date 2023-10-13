@@ -62,7 +62,6 @@ const api = createApi({
         dispatch(setLoading(true));
         try {
           const { data } = await queryFulfilled;
-          console.log(data);
           dispatch(setItems(data));
           dispatch(setLoading(false));
         } catch (error) {
@@ -70,8 +69,19 @@ const api = createApi({
         }
       },
     }),
-    fetchSearchItems: build.query({
+    fetchSearchItems: build.mutation({
       query: (key) => `/item/search?key=${key}`,
+      transformResponse: (response) => response.data,
+      async onQueryStarted(_, { dispatch, queryFulfilled }) {
+        dispatch(setLoading(true));
+        try {
+          const { data } = await queryFulfilled;
+          dispatch(setItems(data));
+          dispatch(setLoading(false));
+        } catch (error) {
+          setError(error.error.data);
+        }
+      },
     }),
   }),
 });
@@ -83,7 +93,7 @@ export const {
   useFetchItemsQuery,
   useFetchCategoriesQuery,
   useFetchCategoryItemsMutation,
-  useFetchSearchItemsQuery,
+  useFetchSearchItemsMutation,
   useSaveOrderMutation,
   useGetUserOrdersQuery,
 } = api;
