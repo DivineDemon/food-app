@@ -5,12 +5,15 @@ import {
   DropdownItem,
   DropdownTrigger,
 } from "@nextui-org/react";
+import { useDispatch } from "react-redux";
 import { CgMenuRight } from "react-icons/cg";
 import { FaUserCircle } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import { logout } from "../store/slices/userSlice";
 
 const DropMenu = ({ options, image, type }) => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleRedirect = (option) => {
     switch (option) {
@@ -21,6 +24,7 @@ const DropMenu = ({ options, image, type }) => {
         navigate("/profile");
         break;
       case "Logout":
+        dispatch(logout());
         navigate("/auth");
         break;
       case "Recent Orders":
