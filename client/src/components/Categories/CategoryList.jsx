@@ -14,18 +14,11 @@ const CategoryList = () => {
     await data(id);
   };
 
-  if (isLoading) {
+  if (isError || isLoading) {
     return (
       <div className="w-full flex items-center justify-center p-5">
-        <Loading />
-      </div>
-    );
-  }
-
-  if (isError) {
-    return (
-      <div className="w-full flex items-center justify-center p-5">
-        <NotFound message="Categories not Found!" />
+        {isError && <NotFound message="Categories not Found!" />}
+        {isLoading && <Loading />}
       </div>
     );
   }

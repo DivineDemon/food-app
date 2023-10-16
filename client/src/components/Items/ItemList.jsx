@@ -9,11 +9,7 @@ import { useEffect, useState } from "react";
 const ItemList = () => {
   const [finalItems, setFinalItems] = useState([]);
   const { data: items, isLoading, isError } = useFetchItemsQuery();
-  const {
-    items: allItems,
-    loading,
-    error,
-  } = useSelector((state) => state.item);
+  const { items: allItems } = useSelector((state) => state.item);
 
   useEffect(() => {
     if (allItems.length !== 0) {
@@ -25,18 +21,11 @@ const ItemList = () => {
     }
   }, [items, allItems]);
 
-  if (isLoading || loading) {
+  if (isError || isLoading) {
     return (
       <div className="w-full flex items-center justify-center p-5">
-        <Loading />
-      </div>
-    );
-  }
-
-  if (isError || error) {
-    return (
-      <div className="w-full flex items-center justify-center p-5">
-        <NotFound message="Items not Found!" />
+        {isError ? <NotFound message="Items not Found!" /> : null}
+        {isLoading ? <Loading /> : null}
       </div>
     );
   }

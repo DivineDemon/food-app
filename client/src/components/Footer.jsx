@@ -9,17 +9,21 @@ import {
 
 const Footer = () => {
   return (
-    <div className="w-screen flex flex-row items-center justify-between px-10 py-3 border">
-      <img src={Logo} alt="logo" className="w-14 h-14" />
-      <span>&copy; Food App.</span>
-      <div className="flex flex-row items-center justify-center space-x-3">
-        <AiOutlineInstagram className="w-8 h-8" />
-        <AiOutlineWhatsApp className="w-8 h-8" />
-        <AiFillGithub className="w-8 h-8" />
-        <AiFillLinkedin className="w-8 h-8" />
-        <AiOutlineMail className="w-8 h-8" />
+    <footer className="w-screen grid grid-cols-12 border">
+      <div className="col-span-2 w-full h-full p-2 flex items-center justify-center">
+        <img src={Logo} alt="logo" className="w-24 h-24" />
       </div>
-    </div>
+      <span className="col-span-8 w-full h-full flex items-center justify-center">
+        &copy; Food App.
+      </span>
+      <div className="col-span-2 w-full h-full flex flex-row items-center justify-center space-x-3">
+        <AiOutlineInstagram className="w-8 h-8 cursor-pointer" />
+        <AiOutlineWhatsApp className="w-8 h-8 cursor-pointer" />
+        <AiFillGithub className="w-8 h-8 cursor-pointer" />
+        <AiFillLinkedin className="w-8 h-8 cursor-pointer" />
+        <AiOutlineMail className="w-8 h-8 cursor-pointer" />
+      </div>
+    </footer>
   );
 };
 
