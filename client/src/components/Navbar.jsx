@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { FaShoppingCart } from "react-icons/fa";
 import { useSelector, useDispatch } from "react-redux";
 
@@ -10,6 +11,7 @@ import { toggleDrawer } from "../store/slices/orderSlice";
 const Navbar = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const location = useLocation();
   const { user } = useSelector((state) => state.user);
   const { quantity } = useSelector((state) => state.order);
 
@@ -32,9 +34,11 @@ const Navbar = () => {
       />
       {/* Items */}
       <ul className="flex flex-row items-center justify-center space-x-10">
-        <li>
-          <Search />
-        </li>
+        {location.pathname === "/" ? (
+          <li>
+            <Search />
+          </li>
+        ) : null}
         <li>
           {Object.keys(user).length !== 0 ? (
             <div className="relative flex flex-row items-center justify-center space-x-2 cursor-pointer">

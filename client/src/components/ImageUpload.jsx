@@ -14,7 +14,7 @@ const ImageUpload = ({ toggle, formData, setFormData, image }) => {
     setLoading(true);
     const base64 = await imageToBase64(e.target.files[0]);
 
-    const response = await fetch(
+    let response = await fetch(
       `${import.meta.env.VITE_BASE_URL}/user/upload`,
       {
         method: "POST",
@@ -25,11 +25,11 @@ const ImageUpload = ({ toggle, formData, setFormData, image }) => {
       }
     );
 
-    const data = await response.json();
+    response = await response.json();
 
-    if (data.url) {
+    if (response.data) {
       setLoading(false);
-      setFormData({ ...formData, image: data.url });
+      setFormData({ ...formData, image: response.data });
     }
   };
 
@@ -51,11 +51,7 @@ const ImageUpload = ({ toggle, formData, setFormData, image }) => {
             <button
               type="button"
               onClick={triggerUpload}
-              className={
-                formData.image
-                  ? "hidden"
-                  : "px-5 py-3 text-white font-semibold rounded-lg bg-black"
-              }>
+              className="px-5 py-3 text-white font-semibold rounded-lg bg-black">
               Upload Image
             </button>
           </div>

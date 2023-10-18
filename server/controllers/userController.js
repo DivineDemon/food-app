@@ -19,23 +19,12 @@ const uploadProfile = async (req, res) => {
     const data = await response.json();
 
     if (data.data.url) {
-      return res.status(200).json({
-        success: true,
-        message: "Successfully Stored Image!",
-        url: data.data.url,
-      });
+      sendResponse(res, 200, data.data.url);
     } else {
-      return res.status(400).json({
-        success: false,
-        message: "Failed to Stored Image!",
-      });
+      sendResponse(res, 400);
     }
   } catch (error) {
-    return res.status(500).json({
-      success: false,
-      message: "Please Try Again!",
-      error: error.message,
-    });
+    sendResponse(res, 500, error);
   }
 };
 
