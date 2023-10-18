@@ -1,7 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import {
   incrementItemQuantity,
-  decrementItemQuantity,
 } from "../../utils/helpers";
 
 const initialState = {
@@ -69,12 +68,14 @@ const orderSlice = createSlice({
       state.total += action.payload.price;
     },
     decrement: (state, action) => {
-      let finalItems = decrementItemQuantity(
-        state.orderItems,
-        action.payload.ID
-      );
-      state.orderItems = finalItems;
-      state.total -= action.payload.price;
+      const index = state.orderItems.findIndex((item) => item.ID === action.payload.ID);
+
+      if (index !== -1) {
+        if (state.orderItems[index].quantity !== 1) {
+          state.orderItems[index].quantity -= 1;
+          state.total -= action.payload.price;
+        }
+      }
     },
     clearOrders: (state) => {
       state.total = 0;

@@ -11,7 +11,7 @@ const Footer = () => {
   return (
     <footer className="w-screen grid grid-cols-12 border">
       <div className="col-span-2 w-full h-full p-2 flex items-center justify-center">
-        <img src={Logo} alt="logo" className="w-24 h-24" />
+        <img src={Logo} alt="logo" className="w-14 h-14" />
       </div>
       <span className="col-span-8 w-full h-full flex items-center justify-center">
         &copy; Food App.

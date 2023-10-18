@@ -26,13 +26,3 @@ export const incrementItemQuantity = (items, id) => {
 
   return items;
 };
-
-export const decrementItemQuantity = (items, id) => {
-  const index = items.findIndex((item) => item.ID === id);
-
-  if (index !== -1) {
-    items[index].quantity -= 1;
-  }
-
-  return items;
-};

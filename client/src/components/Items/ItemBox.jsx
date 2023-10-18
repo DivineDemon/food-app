@@ -14,6 +14,7 @@ const ItemBox = ({ item }) => {
       Object.assign(tempItem, item);
       tempItem.quantity = 1;
       dispatch(setOrder(tempItem));
+      toast.success(`Added ${item.name} to Cart!`)
     }
   };
 
