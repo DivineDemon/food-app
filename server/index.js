@@ -1,9 +1,9 @@
 const express = require("express");
 const { errorHandler } = require("./middleware/errorHandler");
 
+require("dotenv").config();
 const cors = require("cors");
 const morgan = require("morgan");
-const dotenv = require("dotenv").config();
 
 // App Initialization
 const app = express();
@@ -25,7 +25,6 @@ app.use("/api/auth", require("./routes/authRoutes"));
 app.use("/api/item", require("./routes/itemRoutes"));
 app.use("/api/user", require("./routes/userRoutes"));
 app.use("/api/order", require("./routes/orderRoutes"));
-app.use("/api/payment", require("./routes/paymentRoute"));
 app.use("/api/category", require("./routes/categoryRoutes"));
 
 // Start Server
