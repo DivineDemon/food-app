@@ -83,6 +83,10 @@ const api = createApi({
         }
       },
     }),
+    fetchOrder: build.query({
+      query: (id) => `/order?order_id=${id}`,
+      transformResponse: (response) => response.data,
+    }),
   }),
 });
 
@@ -96,6 +100,7 @@ export const {
   useFetchSearchItemsMutation,
   useSaveOrderMutation,
   useGetUserOrdersQuery,
+  useFetchOrderQuery,
 } = api;
 
 export default api;

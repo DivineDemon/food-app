@@ -26,7 +26,7 @@ const OrderCard = ({ order }) => {
             </span>
           </div>
         </div>
-        <DropMenu options={["Download"]} type="menu" />
+        <DropMenu options={["View Invoice"]} type="menu" id={order.ID} />
       </div>
       {/* Order Items */}
       <div className="w-full h-full p-3 flex flex-col items-center justify-start space-y-3">

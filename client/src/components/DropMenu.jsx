@@ -11,7 +11,7 @@ import { FaUserCircle } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { logout } from "../store/slices/userSlice";
 
-const DropMenu = ({ options, image, type }) => {
+const DropMenu = ({ options, image, type, id }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -29,6 +29,9 @@ const DropMenu = ({ options, image, type }) => {
         break;
       case "Recent Orders":
         navigate("/history");
+        break;
+      case "View Invoice":
+        navigate(`/invoice/${id}`);
         break;
       default:
         navigate("/");

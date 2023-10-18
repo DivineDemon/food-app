@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Auth from "./pages/Auth";
 import Home from "./pages/Home";
 import Profile from "./pages/Profile";
+import Invoice from "./pages/Invoice";
 import Layout from "./components/Layout";
 import PageNotFound from "./pages/PageNotFound";
 import RecentOrders from "./pages/RecentOrders";
@@ -29,6 +30,14 @@ const App = () => {
             element={
               <ProtectedRoute>
                 <RecentOrders />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/invoice/:order_id"
+            element={
+              <ProtectedRoute>
+                <Invoice />
               </ProtectedRoute>
             }
           />
