@@ -8,6 +8,7 @@ const initialState = {
   orderItems: [],
   quantity: 0,
   isActive: false,
+  payment: "",
 };
 
 const orderSlice = createSlice({
@@ -36,6 +37,9 @@ const orderSlice = createSlice({
         state.quantity += 1;
         state.total += item.price;
       }
+    },
+    setPaymentMethod: (state, action) => {
+      state.payment = action.payload;
     },
     getOrder: (state) => {
       return state.orderItems;
@@ -68,7 +72,9 @@ const orderSlice = createSlice({
       state.total += action.payload.price;
     },
     decrement: (state, action) => {
-      const index = state.orderItems.findIndex((item) => item.ID === action.payload.ID);
+      const index = state.orderItems.findIndex(
+        (item) => item.ID === action.payload.ID
+      );
 
       if (index !== -1) {
         if (state.orderItems[index].quantity !== 1) {
@@ -93,5 +99,6 @@ export const {
   increment,
   decrement,
   clearOrders,
+  setPaymentMethod,
 } = orderSlice.actions;
 export default orderSlice.reducer;

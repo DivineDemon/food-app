@@ -33,9 +33,25 @@ const OrderCard = ({ order }) => {
         {order.order_items.map((item) => (
           <ItemCard key={item.item_id} item={item} />
         ))}
-        <div className="w-full flex flex-row items-center justify-between p-1">
-          <span className="text-sm font-bold text-black">Grand Total:</span>
-          <span className="text-sm font-bold text-black">{order.total}</span>
+        <div className="w-full flex flex-col items-center justify-center p-1">
+          <div className="w-full flex flex-row items-center justify-between">
+            <span className="text-sm font-bold text-black">Grand Total:</span>
+            <span className="text-sm font-bold text-black">Rs.{order.total}</span>
+          </div>
+          <div className="w-full flex flex-row items-center justify-between">
+            <span className="text-sm font-bold text-black">
+              Payment Method:
+            </span>
+            <span className="text-sm font-bold text-black uppercase">
+              {order.payment_method}
+            </span>
+          </div>
+          <div className="w-full flex flex-row items-center justify-between">
+            <span className="text-sm font-bold text-black">Status:</span>
+            <span className="text-sm font-bold text-black">
+              {order.status === false ? "Processing" : "Paid"}
+            </span>
+          </div>
         </div>
       </div>
     </div>

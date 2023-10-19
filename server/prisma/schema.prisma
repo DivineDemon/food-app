@@ -42,13 +42,15 @@ model item {
 }
 
 model order {
-  ID          Int           @id @default(autoincrement())
-  user_id     Int
-  total       Float?
-  created_at  DateTime      @default(now())
-  updated_at  DateTime      @updatedAt
-  user        user          @relation(fields: [user_id], references: [ID], onDelete: Cascade, map: "user")
-  order_items order_items[]
+  ID             Int           @id @default(autoincrement())
+  user_id        Int
+  total          Float?
+  created_at     DateTime      @default(now())
+  updated_at     DateTime      @updatedAt
+  user           user          @relation(fields: [user_id], references: [ID], onDelete: Cascade, map: "user")
+  status         Boolean?
+  payment_method String
+  order_items    order_items[]
 
   @@index([user_id], map: "user")
 }

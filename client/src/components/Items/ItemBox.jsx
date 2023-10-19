@@ -1,4 +1,4 @@
-import { toast, Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { setOrder } from "../../store/slices/orderSlice";
 
@@ -20,7 +20,6 @@ const ItemBox = ({ item }) => {
 
   return (
     <div className="w-[350px] h-[500px] rounded-lg border border-yellow-500 flex flex-col items-center justify-between">
-      <Toaster />
       <img
         src={item.image}
         alt="item"

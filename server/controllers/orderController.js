@@ -5,7 +5,7 @@ const prisma = new PrismaClient();
 
 const addOrder = async (req, res) => {
   try {
-    const { user_id, total, order_items } = req.body;
+    const { user_id, total, order_items, payment_method } = req.body;
 
     const orderItemsData = order_items.map((item) => {
       return {
@@ -18,10 +18,12 @@ const addOrder = async (req, res) => {
       };
     });
 
-    await prisma.order.create({
+    const newOrder = await prisma.order.create({
       data: {
         user_id,
         total,
+        status: false,
+        payment_method,
         order_items: {
           create: orderItemsData,
         },
@@ -35,7 +37,7 @@ const addOrder = async (req, res) => {
       },
     });
 
-    sendResponse(res, 200);
+    sendResponse(res, 200, newOrder);
   } catch (error) {
     sendResponse(res, 500, error);
   }

@@ -1,9 +1,8 @@
 import { useSelector } from "react-redux";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 
 import Navbar from "../components/Navbar";
 import Banner from "../components/Banner";
-import CartList from "../components/Cart/CartList";
 import ItemList from "../components/Items/ItemList";
 import CategoryList from "../components/Categories/CategoryList";
 
@@ -16,12 +15,10 @@ const Home = () => {
 
   return (
     <>
-      <Toaster />
       <Navbar />
       <Banner />
       <CategoryList />
       <ItemList />
-      <CartList />
     </>
   );
 };

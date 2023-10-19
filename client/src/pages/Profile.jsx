@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { FaArrowLeft, FaTelegramPlane } from "react-icons/fa";
 
@@ -58,7 +58,6 @@ const Profile = () => {
 
   return (
     <div className="w-screen h-screen flex items-center justify-center">
-      <Toaster />
       <form
         onSubmit={(e) => {
           e.preventDefault();
