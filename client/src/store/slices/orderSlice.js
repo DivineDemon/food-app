@@ -88,6 +88,25 @@ const orderSlice = createSlice({
       state.orderItems = [];
       state.quantity = 0;
     },
+    setItemQuantity: (state, action) => {
+      let newTotal = 0;
+
+      const index = state.orderItems.findIndex(
+        (item) => item.ID === action.payload.ID
+      );
+
+      if (index !== -1) {
+        state.orderItems[index].quantity = isNaN(action.payload.quantity)
+          ? 0
+          : parseInt(action.payload.quantity);
+      }
+
+      for (const item of state.orderItems) {
+        newTotal += item.price * item.quantity;
+      }
+
+      state.total = newTotal;
+    },
   },
 });
 
@@ -100,5 +119,6 @@ export const {
   decrement,
   clearOrders,
   setPaymentMethod,
+  setItemQuantity,
 } = orderSlice.actions;
 export default orderSlice.reducer;

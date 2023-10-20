@@ -5,6 +5,7 @@ import {
   decrement,
   increment,
   deleteItem,
+  setItemQuantity,
 } from "../../store/slices/orderSlice";
 
 const CartItem = ({ item }) => {
@@ -20,6 +21,16 @@ const CartItem = ({ item }) => {
 
   const handleDecrement = () => {
     dispatch(decrement(item));
+  };
+
+  const handleQuantity = (quantity) => {
+    const payload = {
+      ID: item.ID,
+      price: item.price,
+      quantity: quantity === "" ? 1 : quantity,
+    };
+    
+    dispatch(setItemQuantity(payload));
   };
 
   return (
@@ -42,17 +53,20 @@ const CartItem = ({ item }) => {
         <div className="w-full h-[35%] flex flex-row items-center justify-center rounded-lg text-md">
           <div
             onClick={handleDecrement}
-            className="w-full h-full flex items-center justify-center bg-black text-white rounded-l-lg cursor-pointer"
-          >
+            className="w-full h-full flex items-center justify-center bg-black text-white rounded-l-lg cursor-pointer">
             <BiMinus />
           </div>
-          <div className="w-full h-full font-semibold p-1 text-center">
-            {item.quantity}
+          <div className="w-full h-full font-semibold p-1 text-center bg-white">
+            <input
+              onChange={(e) => handleQuantity(e.target.value)}
+              type="text"
+              value={item.quantity}
+              className="text-center w-full h-full text-black"
+            />
           </div>
           <div
             onClick={handleIncrement}
-            className="w-full h-full flex items-center justify-center bg-black text-white rounded-r-lg cursor-pointer"
-          >
+            className="w-full h-full flex items-center justify-center bg-black text-white rounded-r-lg cursor-pointer">
             <BiPlus />
           </div>
         </div>

@@ -22,8 +22,8 @@ const paymentGateway = async (req, res) => {
     payment_method_types: ["card"],
     line_items,
     mode: "payment",
-    success_url: `http://localhost:5173/history`,
-    cancel_url: `http://localhost:5173/history`,
+    success_url: `${process.env.BASE_URL}/history`,
+    cancel_url: `${process.env.BASE_URL}/history`,
   });
 
   if (session) {
