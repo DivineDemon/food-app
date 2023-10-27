@@ -1,8 +1,6 @@
 const { PrismaClient } = require("@prisma/client");
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
-const { sendResponse } = require("../utils/responseHandler");
-
 const prisma = new PrismaClient();
 
 const paymentGateway = async (req, res) => {
