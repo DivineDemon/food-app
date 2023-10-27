@@ -41,11 +41,7 @@ const CartList = () => {
       dispatch(clearOrders());
       toast.success("Order Placed Successfully, Please Proceed to Payment!");
 
-      console.log(
-        pay,
-        import.meta.env.VITE_STRIPE_PUB_KEY,
-        import.meta.env.VITE_BASE_URL
-      );
+      console.log(import.meta.env.VITE_STRIPE_PUB_KEY);
 
       if (pay === "card") {
         const stripe = await loadStripe(import.meta.env.VITE_STRIPE_PUB_KEY);
