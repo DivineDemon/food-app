@@ -49,6 +49,8 @@ const CartList = () => {
           body: JSON.stringify({ products: orderItems, order_id: response.data.data.ID }),
         });
 
+        console.log(paySession);
+
         paySession = await paySession.json();
         const payResult = stripe.redirectToCheckout({
           sessionId: paySession.id,
