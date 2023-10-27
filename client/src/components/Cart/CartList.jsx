@@ -41,8 +41,6 @@ const CartList = () => {
       dispatch(clearOrders());
       toast.success("Order Placed Successfully, Please Proceed to Payment!");
 
-      console.log(import.meta.env.STRIPE_PUB_KEY);
-
       if (pay === "card") {
         const stripe = await loadStripe(import.meta.env.VITE_STRIPE_PUB_KEY);
         let paySession = await fetch(`${import.meta.env.VITE_BASE_URL}/pay`, {
@@ -50,8 +48,6 @@ const CartList = () => {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ products: orderItems, order_id: response.data.data.ID }),
         });
-
-        console.log(paySession);
 
         paySession = await paySession.json();
         const payResult = stripe.redirectToCheckout({

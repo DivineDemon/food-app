@@ -35,8 +35,6 @@ const paymentGateway = async (req, res) => {
     });
   }
 
-  console.log(session);
-
   res.json({
     id: session.id,
   });
