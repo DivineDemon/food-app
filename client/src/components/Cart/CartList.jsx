@@ -13,6 +13,8 @@ import {
   setPaymentMethod,
 } from "../../store/slices/orderSlice";
 
+const stripeKey = import.meta.env.VITE_STRIPE_PUB_KEY;
+
 const CartList = () => {
   const dispatch = useDispatch();
   const [pay, setPay] = useState("cod");
@@ -41,12 +43,16 @@ const CartList = () => {
       dispatch(clearOrders());
       toast.success("Order Placed Successfully, Please Proceed to Payment!");
 
+      console.log(stripeKey);
       if (pay === "card") {
-        const stripe = await loadStripe(import.meta.env.VITE_STRIPE_PUB_KEY);
+        const stripe = await loadStripe(stripeKey);
         let paySession = await fetch(`${import.meta.env.VITE_BASE_URL}/pay`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ products: orderItems, order_id: response.data.data.ID }),
+          body: JSON.stringify({
+            products: orderItems,
+            order_id: response.data.data.ID,
+          }),
         });
 
         paySession = await paySession.json();
